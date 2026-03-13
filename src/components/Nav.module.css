@@ -1,0 +1,133 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.links {
+  display: flex;
+  list-style: none;
+  gap: 1.8rem;
+}
+
+.link {
+  font-size: 0.75rem;
+  text-transform: lowercase;
+  letter-spacing: 1px;
+  color: var(--gray);
+  transition: color 0.2s;
+  position: relative;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--text);
+  transition: width 0.3s ease;
+}
+
+.link:hover {
+  color: var(--text);
+}
+
+.link:hover::after {
+  width: 100%;
+}
+
+.themeToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--text);
+  transition: border-color 0.2s, color 0.3s;
+}
+
+.themeToggle:hover {
+  border-color: var(--gray);
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.bar {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--text);
+  transition: transform 0.3s, opacity 0.3s, background 0.3s;
+}
+
+.bar.open:first-child {
+  transform: rotate(45deg) translate(2px, 2px);
+}
+
+.bar.open:last-child {
+  transform: rotate(-45deg) translate(2px, -2px);
+}
+
+.mobileLinks {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .links {
+    display: none;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .mobileLinks {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+    list-style: none;
+    padding: 1.5rem 2rem;
+    gap: 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+}

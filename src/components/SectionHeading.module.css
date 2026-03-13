@@ -1,0 +1,11 @@
+.heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+.slash {
+  color: var(--dark-gray);
+  font-weight: 300;
+}

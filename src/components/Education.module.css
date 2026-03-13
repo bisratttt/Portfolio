@@ -1,0 +1,85 @@
+.card {
+  padding: 1.5rem;
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.card:hover {
+  border-color: var(--card-hover);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.schoolRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.school {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.period {
+  font-size: 0.7rem;
+  color: var(--dark-gray);
+}
+
+.degree {
+  font-size: 0.8rem;
+  color: var(--gray);
+}
+
+.minor {
+  font-size: 0.75rem;
+  color: var(--dark-gray);
+  margin-top: 0.15rem;
+}
+
+.honors {
+  font-size: 0.75rem;
+  color: var(--gray);
+  font-style: italic;
+  margin-top: 0.3rem;
+}
+
+.courses {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.coursesLabel {
+  font-size: 0.65rem;
+  color: var(--dark-gray);
+}
+
+.course {
+  font-size: 0.65rem;
+  color: var(--gray);
+  border: 1px solid var(--card-border);
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  transition: border-color 0.2s;
+}
+
+.motto {
+  font-size: 0.7rem;
+  color: var(--dark-gray);
+  margin-top: 0.6rem;
+  font-style: italic;
+}
+
+.turkey {
+  display: flex;
+  align-items: center;
+}

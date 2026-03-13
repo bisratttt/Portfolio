@@ -1,0 +1,44 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.category {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dark-gray);
+  text-transform: lowercase;
+  letter-spacing: 1px;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.pill {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--card-border);
+  border-radius: 2px;
+  color: var(--text);
+  transition: border-color 0.2s, color 0.2s;
+  cursor: default;
+}
+
+.pill:hover {
+  border-color: var(--card-hover);
+}
+
+.familiar {
+  color: var(--gray);
+  border-style: dashed;
+}

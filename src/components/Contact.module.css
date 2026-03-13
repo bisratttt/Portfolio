@@ -1,0 +1,59 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.text {
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.link {
+  display: flex;
+  gap: 2rem;
+  align-items: baseline;
+  font-size: 0.8rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.3s;
+}
+
+.link:hover {
+  border-color: var(--card-hover);
+}
+
+.label {
+  color: var(--dark-gray);
+  min-width: 70px;
+  font-size: 0.7rem;
+  text-transform: lowercase;
+}
+
+.display {
+  color: var(--gray);
+  transition: color 0.2s;
+}
+
+.link:hover .display {
+  color: var(--text);
+}
+
+.footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.footer p {
+  font-size: 0.65rem;
+  color: var(--dark-gray);
+  text-align: center;
+}

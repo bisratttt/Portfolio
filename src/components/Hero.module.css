@@ -1,0 +1,65 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 4rem 2rem;
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.pre {
+  font-size: 1rem;
+  color: var(--gray);
+  margin-bottom: 0.5rem;
+}
+
+.name {
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -2px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: baseline;
+  line-height: 1.1;
+}
+
+.nameText {
+  transition: text-shadow 0.2s;
+}
+
+.name:hover .nameText {
+  text-shadow: 0 0 40px rgba(128, 128, 128, 0.2);
+}
+
+.cursor {
+  font-weight: 300;
+  margin-left: 2px;
+  color: var(--gray);
+}
+
+.greeting {
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.tagline {
+  font-size: 0.8rem;
+  color: var(--dark-gray);
+  margin-top: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  color: var(--dark-gray);
+}

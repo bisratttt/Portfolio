@@ -1,0 +1,52 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+@media (max-width: 500px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  padding: 1.2rem;
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  transition: border-color 0.3s;
+  cursor: default;
+}
+
+.card:hover {
+  border-color: var(--card-hover);
+}
+
+.doodle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.detail {
+  font-size: 0.7rem;
+  color: var(--gray);
+  line-height: 1.5;
+}
