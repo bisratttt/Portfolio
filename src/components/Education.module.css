@@ -18,14 +18,14 @@
 
 .schoolRow {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
-  line-height: 1;
 }
 
 .school {
   font-size: 1rem;
   font-weight: 600;
+  line-height: 1;
 }
 
 .period {

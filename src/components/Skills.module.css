@@ -26,12 +26,15 @@
 
 .pill {
   font-size: 0.7rem;
-  padding: 0.25rem 0.6rem;
+  padding: 0.25rem 0.55rem;
   border: 1px solid var(--card-border);
   border-radius: 2px;
   color: var(--text);
-  transition: border-color 0.2s, color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
   cursor: default;
+  transition: border-color 0.2s;
 }
 
 .pill:hover {
@@ -41,4 +44,11 @@
 .familiar {
   color: var(--gray);
   border-style: dashed;
+}
+
+.pillIcon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  line-height: 0;
 }
