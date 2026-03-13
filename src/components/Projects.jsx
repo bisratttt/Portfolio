@@ -17,10 +17,6 @@ function ProjectCard({ project, index }) {
     <motion.a
       href={project.link}
       className={styles.card}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
       whileHover="hover"
     >
       <motion.h3 className={styles.name}>

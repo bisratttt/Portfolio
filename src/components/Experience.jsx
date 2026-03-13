@@ -186,25 +186,9 @@ function ExperienceCard({ exp, index }) {
     setTimeout(() => setShowBurst(false), 900);
   };
 
-  const staggerContainer = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: 0.05 },
-    },
-  };
-
-  const bulletVariant = {
-    hidden: { opacity: 0, x: -10 },
-    visible: { opacity: 1, x: 0 },
-  };
-
   return (
     <motion.div
       className={styles.card}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
     >
@@ -222,19 +206,11 @@ function ExperienceCard({ exp, index }) {
       <p className={styles.role}>{exp.role}</p>
       <p className={styles.location}>{exp.location}</p>
 
-      <motion.ul
-        className={styles.bullets}
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-30px' }}
-      >
+      <ul className={styles.bullets}>
         {exp.bullets.map((bullet, i) => (
-          <motion.li key={i} className={styles.bullet} variants={bulletVariant}>
-            {bullet}
-          </motion.li>
+          <li key={i} className={styles.bullet}>{bullet}</li>
         ))}
-      </motion.ul>
+      </ul>
 
     </motion.div>
   );

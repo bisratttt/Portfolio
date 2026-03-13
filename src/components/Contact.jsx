@@ -12,13 +12,7 @@ function Contact() {
   return (
     <section id="contact">
       <SectionHeading>contact</SectionHeading>
-      <motion.div
-        className={styles.content}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.5 }}
-      >
+      <div className={styles.content}>
         <p className={styles.text}>
           interested in working together? have a question? just want to say hi?
         </p>
@@ -38,7 +32,7 @@ function Contact() {
             </motion.a>
           ))}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

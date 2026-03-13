@@ -1,128 +1,58 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 import SectionHeading from './SectionHeading';
 import styles from './Education.module.css';
 
-function HokieTurkey({ isActive }) {
-  const maroon = '#861F41';
-  const maroonLight = '#C05070';
-  const orange = '#E87722'; // VT orange for beak/feet
-  const dim = 'var(--icon-dim)';
+const VT_PATH = "M55.21,15.07c-4.56,0-8.75,2.5-10.91,6.5l-2.67,4.93l-0.31,0.57l-0.3,0.56v0l-8.06,14.9l-13.16-24.6h5.85l4.71,8.76l2.47,4.6l2.55-4.56l4.94-8.81h4.27c1.03-1.15,2.24-2.11,3.56-2.87h-9.51l-5.76,10.27l-5.53-10.27H15.01L32.94,48.6l9.98-18.45l1.66-3.06l0.31-0.57l1.92-3.55c0.1-0.19,0.22-0.38,0.33-0.57c1.28-2.02,3.26-3.48,5.53-4.11c0.62-0.17,1.26-0.28,1.91-0.33c0.22-0.01,0.44-0.02,0.66-0.02h26.14l-2.64,4.92H66.64l-0.81,1.52L54.64,45.4h-5.93l9.81-18.23l2.28-4.23H49.02c-0.67,1.06-1.64,2.87-1.64,2.87H56L43.9,48.27h12.46l12-22.55h12.09l5.72-10.65H55.21z";
 
-  // Tail feather angles — fan out on hover
-  const featherAngles = [-50, -30, -10, 10, 30, 50];
+function VTLogo({ isActive }) {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isActive) {
+      controls.start({
+        pathLength: [0, 1],
+        opacity: [0.6, 1],
+        transition: { duration: 0.6, ease: 'easeInOut' },
+      });
+    } else {
+      controls.start({
+        pathLength: 1,
+        opacity: 1,
+        transition: { duration: 0.3 },
+      });
+    }
+  }, [isActive]);
 
   return (
-    <motion.div
-      className={styles.turkey}
-      animate={isActive ? { y: [0, -3, 0, -2, 0] } : {}}
-      transition={{ duration: 0.7 }}
-    >
-      <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
-        {/* Tail feathers — fan out on hover */}
-        {featherAngles.map((angle, i) => {
-          const rad = (angle * Math.PI) / 180;
-          const cx = 24, cy = 28;
-          const len = isActive ? 14 : 9;
-          const x2 = cx + Math.sin(rad) * len;
-          const y2 = cy - Math.cos(rad) * len;
-          return (
-            <motion.line
-              key={i}
-              x1={cx} y1={cy}
-              x2={x2} y2={y2}
-              stroke={isActive ? (i % 2 === 0 ? maroon : maroonLight) : dim}
-              strokeWidth="2"
-              strokeLinecap="round"
-              animate={{ x2, y2 }}
-              transition={{ duration: 0.4, delay: i * 0.03, ease: 'easeOut' }}
-              style={{ transition: 'stroke 0.3s' }}
-            />
-          );
-        })}
-
-        {/* Body */}
-        <motion.ellipse
-          cx="24" cy="32" rx="7" ry="6"
-          fill="none"
-          stroke={isActive ? maroon : dim}
-          strokeWidth="1.5"
-          animate={isActive ? { ry: [6, 6.5, 6] } : {}}
-          transition={{ duration: 0.5 }}
-          style={{ transition: 'stroke 0.3s' }}
+    <div className={styles.turkey}>
+      <svg
+        width="26"
+        height="13"
+        viewBox="12 12 78 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        overflow="visible"
+      >
+        {/* Filled shape, dims when inactive */}
+        <path
+          d={VT_PATH}
+          fill={isActive ? '#861F41' : 'var(--icon-dim)'}
+          style={{ transition: 'fill 0.4s' }}
         />
-
-        {/* Neck */}
+        {/* Stroke that draws itself on hover, layered on top */}
         <motion.path
-          d="M22 27 Q21 22 23 19"
+          d={VT_PATH}
           fill="none"
-          stroke={isActive ? maroon : dim}
-          strokeWidth="1.5"
+          stroke="#861F41"
+          strokeWidth="2"
           strokeLinecap="round"
-          style={{ transition: 'stroke 0.3s' }}
-        />
-
-        {/* Head */}
-        <motion.circle
-          cx="24" cy="17" r="4"
-          fill="none"
-          stroke={isActive ? maroon : dim}
-          strokeWidth="1.5"
-          animate={isActive ? { scale: [1, 1.05, 1] } : {}}
-          transition={{ duration: 0.5 }}
-          style={{ transformOrigin: '24px 17px', transition: 'stroke 0.3s' }}
-        />
-
-        {/* Eye */}
-        <circle
-          cx="25.5" cy="16"
-          r={isActive ? 1.2 : 0.8}
-          fill={isActive ? maroon : dim}
-          style={{ transition: 'fill 0.3s, r 0.3s' }}
-        />
-
-        {/* Beak */}
-        <motion.path
-          d="M28 17 L32 16.5 L28 18"
-          fill="none"
-          stroke={isActive ? orange : dim}
-          strokeWidth="1.5"
           strokeLinejoin="round"
-          strokeLinecap="round"
-          animate={isActive ? { d: 'M28 17 L33 16 L28 18.5' } : { d: 'M28 17 L32 16.5 L28 18' }}
-          transition={{ duration: 0.4 }}
-          style={{ transition: 'stroke 0.3s' }}
-        />
-
-        {/* Wattle (snood) */}
-        <motion.path
-          d="M27 18 Q30 21 27 24"
-          fill="none"
-          stroke={isActive ? maroonLight : dim}
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          animate={isActive ? { d: 'M27 18 Q32 22 27 26' } : { d: 'M27 18 Q30 21 27 24' }}
-          transition={{ duration: 0.5 }}
-          style={{ transition: 'stroke 0.3s' }}
-        />
-
-        {/* Feet */}
-        <motion.path
-          d="M20 37 L18 42 M20 37 L20 42 M20 37 L22 42"
-          stroke={isActive ? orange : dim}
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          style={{ transition: 'stroke 0.3s' }}
-        />
-        <motion.path
-          d="M28 37 L26 42 M28 37 L28 42 M28 37 L30 42"
-          stroke={isActive ? orange : dim}
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          style={{ transition: 'stroke 0.3s' }}
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={controls}
         />
       </svg>
-    </motion.div>
+    </div>
   );
 }
 
@@ -134,17 +64,13 @@ function Education() {
       <SectionHeading>education</SectionHeading>
       <motion.div
         className={styles.card}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.5 }}
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
       >
         <div className={styles.header}>
           <div className={styles.schoolRow}>
+            <VTLogo isActive={hovered} />
             <h3 className={styles.school}>Virginia Tech</h3>
-            <HokieTurkey isActive={hovered} />
           </div>
           <span className={styles.period}>May 2023</span>
         </div>

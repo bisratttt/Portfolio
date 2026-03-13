@@ -216,15 +216,6 @@ const skillGroups = [
 
 // ── Components ────────────────────────────────────────────────────────────────
 
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.03 } },
-};
-
-const pillVariant = {
-  hidden: { opacity: 0, scale: 0.85 },
-  visible: { opacity: 1, scale: 1 },
-};
 
 function SkillPill({ name, familiar }) {
   const [hovered, setHovered] = useState(false);
@@ -233,7 +224,6 @@ function SkillPill({ name, familiar }) {
   return (
     <motion.span
       className={`${styles.pill} ${familiar ? styles.familiar : ''}`}
-      variants={pillVariant}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       whileHover={{ y: -2 }}
@@ -253,31 +243,19 @@ function SkillPill({ name, familiar }) {
   );
 }
 
-function SkillGroup({ group, index }) {
+function SkillGroup({ group }) {
   return (
-    <motion.div
-      className={styles.group}
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-30px' }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-    >
+    <div className={styles.group}>
       <h4 className={styles.category}>{group.category}</h4>
-      <motion.div
-        className={styles.pills}
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-30px' }}
-      >
+      <div className={styles.pills}>
         {group.proficient.map((skill) => (
           <SkillPill key={skill} name={skill} familiar={false} />
         ))}
         {group.familiar.map((skill) => (
           <SkillPill key={skill} name={skill} familiar={true} />
         ))}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -287,7 +265,7 @@ function Skills() {
       <SectionHeading>skills</SectionHeading>
       <div className={styles.grid}>
         {skillGroups.map((group, i) => (
-          <SkillGroup key={group.category} group={group} index={i} />
+          <SkillGroup key={group.category} group={group} />
         ))}
       </div>
     </section>

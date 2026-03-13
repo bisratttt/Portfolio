@@ -6,13 +6,7 @@ function About() {
   return (
     <section id="about">
       <SectionHeading>about</SectionHeading>
-      <motion.div
-        className={styles.content}
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6 }}
-      >
+      <div className={styles.content}>
         <p className={styles.text}>
           software engineer who likes building things that feel good to use.
           currently working on data security and kubernetes infrastructure at
@@ -51,7 +45,7 @@ function About() {
             </a>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
