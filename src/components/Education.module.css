@@ -19,7 +19,8 @@
 .schoolRow {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
+  line-height: 1;
 }
 
 .school {
@@ -82,4 +83,6 @@
 .turkey {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  line-height: 0;
 }
