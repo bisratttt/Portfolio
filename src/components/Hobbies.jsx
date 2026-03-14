@@ -2,16 +2,19 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation, useMotionValue } from 'framer-motion';
 import SectionHeading from './SectionHeading';
 import styles from './Hobbies.module.css';
+import { useTheme } from '../context/ThemeContext';
 
 // ── B: Succulent Bloom ────────────────────────────────────────────────────────
 function PlantDoodle({ isHovered }) {
-  const green = isHovered ? '#4CAF50' : 'var(--icon-dim)';
-  const lightGreen = isHovered ? '#81C784' : 'var(--icon-dim)';
-  const pot = isHovered ? '#8D6E63' : 'var(--icon-dim)';
-  const potRim = isHovered ? '#A1887F' : 'var(--icon-dim)';
-  const petalColor = isHovered ? '#F06292' : 'var(--icon-dim)';
-  const petalInner = isHovered ? '#F8BBD0' : 'var(--icon-dim)';
-  const stemColor = isHovered ? '#66BB6A' : 'var(--icon-dim)';
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const green      = isHovered ? (isDark ? '#4CAF50' : '#388E3C') : 'var(--icon-dim)';
+  const lightGreen = isHovered ? (isDark ? '#81C784' : '#4CAF50') : 'var(--icon-dim)';
+  const pot        = isHovered ? (isDark ? '#8D6E63' : '#5D4037') : 'var(--icon-dim)';
+  const potRim     = isHovered ? (isDark ? '#A1887F' : '#795548') : 'var(--icon-dim)';
+  const petalColor = isHovered ? (isDark ? '#F06292' : '#E91E63') : 'var(--icon-dim)';
+  const petalInner = isHovered ? (isDark ? '#F8BBD0' : '#F06292') : 'var(--icon-dim)';
+  const stemColor  = isHovered ? (isDark ? '#66BB6A' : '#43A047') : 'var(--icon-dim)';
 
   // 8 petals radiating from center when hovered
   const petalCount = 6;
@@ -190,8 +193,10 @@ function TennisDoodle({ isHovered }) {
     }
   }, [isHovered, ballControls, shadowControls]);
 
-  const ballYellow = isHovered ? '#CDDC39' : 'var(--icon-dim)';
-  const seamColor  = isHovered ? '#8BC34A' : 'var(--icon-dim)';
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const ballYellow = isHovered ? (isDark ? '#CDDC39' : '#9E9D24') : 'var(--icon-dim)';
+  const seamColor  = isHovered ? (isDark ? '#8BC34A' : '#558B2F') : 'var(--icon-dim)';
 
   return (
     <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
@@ -254,12 +259,14 @@ function TennisDoodle({ isHovered }) {
 
 // ── A: Vinyl Record ───────────────────────────────────────────────────────────
 function ThriftDoodle({ isHovered }) {
-  const recordColor = isHovered ? '#1a1a2e' : 'var(--icon-dim)';
-  const grooveColor = isHovered ? '#2d2d4e' : 'var(--icon-dim)';
-  const labelColor = isHovered ? '#E53935' : 'var(--icon-dim)';
-  const labelInner = isHovered ? '#EF9A9A' : 'var(--icon-dim)';
-  const needleColor = isHovered ? '#9E9E9E' : 'var(--icon-dim)';
-  const shineColor = isHovered ? 'rgba(255,255,255,0.15)' : 'transparent';
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const recordColor = isHovered ? (isDark ? '#1a1a2e' : '#37474F') : 'var(--icon-dim)';
+  const grooveColor = isHovered ? (isDark ? '#2d2d4e' : '#607D8B') : 'var(--icon-dim)';
+  const labelColor  = isHovered ? '#E53935' : 'var(--icon-dim)';
+  const labelInner  = isHovered ? (isDark ? '#EF9A9A' : '#E57373') : 'var(--icon-dim)';
+  const needleColor = isHovered ? (isDark ? '#9E9E9E' : '#616161') : 'var(--icon-dim)';
+  const shineColor  = isHovered ? (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.07)') : 'transparent';
 
   return (
     <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
@@ -369,18 +376,18 @@ function ThriftDoodle({ isHovered }) {
 // Characters scroll left continuously. Hover speeds them up.
 // useMotionValue keeps position across hover state changes.
 const LANG_CHARS = [
-  { char: 'A',  color: '#4FC3F7' },  // English
-  { char: 'α',  color: '#CE93D8' },  // Greek
-  { char: 'あ', color: '#F48FB1' },  // Japanese
-  { char: 'ب',  color: '#80CBC4' },  // Arabic
-  { char: '가', color: '#FFCC02' },  // Korean
-  { char: 'ñ',  color: '#A5D6A7' },  // Spanish
-  { char: 'β',  color: '#CE93D8' },
-  { char: 'い', color: '#F48FB1' },
-  { char: 'ت',  color: '#80CBC4' },
-  { char: '나', color: '#FFCC02' },
-  { char: 'é',  color: '#A5D6A7' },
-  { char: '你', color: '#FF8A65' },  // Chinese
+  { char: 'A',  dark: '#4FC3F7', light: '#0277BD' },  // English
+  { char: 'α',  dark: '#CE93D8', light: '#7B1FA2' },  // Greek
+  { char: 'あ', dark: '#F48FB1', light: '#C2185B' },  // Japanese
+  { char: 'ب',  dark: '#80CBC4', light: '#00695C' },  // Arabic
+  { char: '가', dark: '#FFCC02', light: '#E65100' },  // Korean
+  { char: 'ñ',  dark: '#A5D6A7', light: '#2E7D32' },  // Spanish
+  { char: 'β',  dark: '#CE93D8', light: '#7B1FA2' },
+  { char: 'い', dark: '#F48FB1', light: '#C2185B' },
+  { char: 'ت',  dark: '#80CBC4', light: '#00695C' },
+  { char: '나', dark: '#FFCC02', light: '#E65100' },
+  { char: 'é',  dark: '#A5D6A7', light: '#2E7D32' },
+  { char: '你', dark: '#FF8A65', light: '#BF360C' },  // Chinese
 ];
 // Duplicate for seamless loop
 const TRAIN = [...LANG_CHARS, ...LANG_CHARS];
@@ -388,6 +395,8 @@ const CHAR_W = 14;        // px spacing per character in SVG units
 const TOTAL_W = LANG_CHARS.length * CHAR_W; // loop resets after this
 
 function LanguageDoodle({ isHovered }) {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const x = useMotionValue(0);
   const rafRef = useRef(null);
   const lastTimeRef = useRef(null);
@@ -413,7 +422,7 @@ function LanguageDoodle({ isHovered }) {
     };
   }, [isHovered, x]);
 
-  const frameColor = isHovered ? '#7C4DFF' : 'var(--icon-dim)';
+  const frameColor = isHovered ? (isDark ? '#7C4DFF' : '#5E35B1') : 'var(--icon-dim)';
 
   return (
     <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
@@ -447,7 +456,7 @@ function LanguageDoodle({ isHovered }) {
       {/* Scrolling characters */}
       <g clipPath="url(#train-clip)">
         <motion.g style={{ x }}>
-          {TRAIN.map(({ char, color }, i) => (
+          {TRAIN.map((c, i) => (
             <text
               key={i}
               x={i * CHAR_W + 10}
@@ -455,11 +464,11 @@ function LanguageDoodle({ isHovered }) {
               textAnchor="middle"
               dominantBaseline="central"
               fontSize="9"
-              fill={isHovered ? color : 'var(--icon-dim)'}
+              fill={isHovered ? (isDark ? c.dark : c.light) : 'var(--icon-dim)'}
               fontFamily="var(--font-mono)"
               style={{ transition: 'fill 0.4s' }}
             >
-              {char}
+              {c.char}
             </text>
           ))}
         </motion.g>
@@ -474,7 +483,7 @@ function LanguageDoodle({ isHovered }) {
         x="24" y="41"
         textAnchor="middle"
         fontSize="5.5"
-        fill={isHovered ? '#B39DDB' : 'var(--icon-dim)'}
+        fill={isHovered ? (isDark ? '#B39DDB' : '#7E57C2') : 'var(--icon-dim)'}
         fontFamily="var(--font-mono)"
         style={{ transition: 'fill 0.3s' }}
       >
