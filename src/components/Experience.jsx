@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
 import SectionHeading from './SectionHeading';
 import styles from './Experience.module.css';
 
@@ -83,9 +83,9 @@ function ThumbsUpBurst({ isActive }) {
   );
 }
 
-function AtlassianLogo({ isHovered }) {
+function AtlassianLogo({ isActive }) {
   // The Atlassian logo is a mountain/chevron shape split into two pieces.
-  // On hover: left piece slides down-left slightly, right piece goes up-right,
+  // On scroll into view: left piece slides down-left slightly, right piece goes up-right,
   // then both snap back — like a deploy completing.
   return (
     <div className={styles.atlassianLogo}>
@@ -104,8 +104,8 @@ function AtlassianLogo({ isHovered }) {
         {/* Left lower chevron piece */}
         <motion.path
           d="M10.5 18.2C10.3 17.9 9.9 17.9 9.7 18.2L4.1 29.1C3.9 29.4 4.1 29.8 4.5 29.8H12.5C12.7 29.8 12.9 29.7 13 29.5C15 25.6 13.4 21 10.5 18.2Z"
-          fill={isHovered ? 'url(#atl-grad-left)' : 'var(--icon-dim)'}
-          animate={isHovered ? { x: [-2, 0], y: [2, 0] } : { x: 0, y: 0 }}
+          fill={isActive ? 'url(#atl-grad-left)' : 'var(--icon-dim)'}
+          animate={isActive ? { x: [-2, 0], y: [2, 0] } : { x: 0, y: 0 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
           style={{ transition: 'fill 0.3s' }}
         />
@@ -113,8 +113,8 @@ function AtlassianLogo({ isHovered }) {
         {/* Right tall chevron piece */}
         <motion.path
           d="M14.8 3.3C11.5 9.2 11.7 16.1 15.2 21.8L20.1 29.5C20.2 29.7 20.4 29.8 20.6 29.8H28.6C28.9 29.8 29.2 29.4 29 29.1L16.4 3.3C16.2 2.9 15.7 2.9 14.8 3.3Z"
-          fill={isHovered ? 'url(#atl-grad-right)' : 'var(--icon-dim)'}
-          animate={isHovered ? { x: [2, 0], y: [-2, 0] } : { x: 0, y: 0 }}
+          fill={isActive ? 'url(#atl-grad-right)' : 'var(--icon-dim)'}
+          animate={isActive ? { x: [2, 0], y: [-2, 0] } : { x: 0, y: 0 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
           style={{ transition: 'fill 0.3s' }}
         />
@@ -123,38 +123,36 @@ function AtlassianLogo({ isHovered }) {
   );
 }
 
-function MetaLike({ hovered, onClick, showBurst }) {
+function MetaLike({ isActive, onClick, showBurst }) {
   // Facebook-style like button: circle pill with thumbs up icon inside.
-  // On hover: circle fills blue, thumb animates up, label "Like" fades in.
+  // On hover (desktop) or scroll into view (mobile): circle fills blue, label "Like" fades in.
   return (
     <div className={styles.metaReaction}>
       <ThumbsUpBurst isActive={showBurst} />
       <motion.button
         className={styles.likeButton}
         onClick={onClick}
-        animate={hovered ? { scale: [1, 1.08, 1] } : { scale: 1 }}
-        transition={{ duration: 0.3 }}
+        animate={{ scale: 1 }}
         aria-label="Like"
       >
         {/* Pill background */}
         <motion.div
           className={styles.likePill}
           animate={{
-            backgroundColor: hovered ? '#1877F2' : 'transparent',
-            borderColor: hovered ? '#1877F2' : 'var(--icon-dim)',
+            backgroundColor: isActive ? '#1877F2' : 'transparent',
+            borderColor: isActive ? '#1877F2' : 'var(--icon-dim)',
           }}
           transition={{ duration: 0.25 }}
         >
           {/* Thumb icon */}
           <motion.svg
             width="13" height="13" viewBox="0 0 24 24" fill="none"
-            animate={hovered ? { y: [0, -2, 0] } : { y: 0 }}
-            transition={{ duration: 0.3 }}
+            animate={{ y: 0 }}
           >
             <path
               d="M7 22H4C3.47 22 2.96 21.79 2.59 21.41C2.21 21.04 2 20.53 2 20V13C2 12.47 2.21 11.96 2.59 11.59C2.96 11.21 3.47 11 4 11H7M14 9V5C14 4.2 13.68 3.44 13.12 2.88C12.56 2.32 11.8 2 11 2L7 11V22H18.28C18.76 22 19.23 21.84 19.6 21.52C19.97 21.21 20.21 20.78 20.28 20.3L21.66 11.3C21.7 11.01 21.68 10.72 21.6 10.44C21.52 10.16 21.38 9.91 21.19 9.69C21 9.47 20.77 9.29 20.5 9.18C20.24 9.06 19.95 9 19.66 9H14Z"
-              fill={hovered ? 'white' : 'none'}
-              stroke={hovered ? 'white' : 'var(--icon-dim)'}
+              fill={isActive ? 'white' : 'none'}
+              stroke={isActive ? 'white' : 'var(--icon-dim)'}
               strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -162,10 +160,10 @@ function MetaLike({ hovered, onClick, showBurst }) {
             />
           </motion.svg>
 
-          {/* "Like" label that appears on hover */}
+          {/* "Like" label that appears on hover/scroll */}
           <motion.span
             className={styles.likeLabel}
-            animate={{ opacity: hovered ? 1 : 0, width: hovered ? 'auto' : 0, marginLeft: hovered ? '3px' : 0 }}
+            animate={{ opacity: isActive ? 1 : 0, width: isActive ? 'auto' : 0, marginLeft: isActive ? '3px' : 0 }}
             transition={{ duration: 0.2 }}
           >
             Like
@@ -176,9 +174,27 @@ function MetaLike({ hovered, onClick, showBurst }) {
   );
 }
 
+const canHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
+
 function ExperienceCard({ exp, index }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: '-80px' });
   const [hovered, setHovered] = useState(false);
+  const [mobileActive, setMobileActive] = useState(false);
   const [showBurst, setShowBurst] = useState(false);
+
+  useEffect(() => {
+    if (canHover) return;
+    let timer;
+    if (inView) {
+      timer = setTimeout(() => setMobileActive(true), 400);
+    } else {
+      setMobileActive(false);
+    }
+    return () => clearTimeout(timer);
+  }, [inView]);
+
+  const isActive = canHover ? hovered : mobileActive;
 
   const handleMetaClick = (e) => {
     e.stopPropagation();
@@ -188,16 +204,17 @@ function ExperienceCard({ exp, index }) {
 
   return (
     <motion.div
+      ref={ref}
       className={styles.card}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
+      onHoverStart={canHover ? () => setHovered(true) : undefined}
+      onHoverEnd={canHover ? () => setHovered(false) : undefined}
     >
       <div className={styles.cardHeader}>
         <div className={styles.companyRow}>
-          {exp.animation === 'atlassian' && <AtlassianLogo isHovered={hovered} />}
+          {exp.animation === 'atlassian' && <AtlassianLogo isActive={isActive} />}
           <h3 className={styles.company}>{exp.company}</h3>
           {exp.animation === 'meta' && (
-            <MetaLike hovered={hovered} onClick={handleMetaClick} showBurst={showBurst} />
+            <MetaLike isActive={isActive} onClick={handleMetaClick} showBurst={showBurst} />
           )}
         </div>
         <span className={styles.period}>{exp.period}</span>

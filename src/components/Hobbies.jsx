@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useAnimation, useMotionValue } from 'framer-motion';
+import { motion, useAnimation, useMotionValue, useInView } from 'framer-motion';
 import SectionHeading from './SectionHeading';
 import styles from './Hobbies.module.css';
 import { useTheme } from '../context/ThemeContext';
@@ -518,18 +518,37 @@ const hobbies = [
   },
 ];
 
+const canHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
+
 function HobbyCard({ hobby }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: '-80px' });
   const [hovered, setHovered] = useState(false);
+  const [mobileActive, setMobileActive] = useState(false);
   const { Doodle } = hobby;
+
+  useEffect(() => {
+    if (canHover) return;
+    let timer;
+    if (inView) {
+      timer = setTimeout(() => setMobileActive(true), 400);
+    } else {
+      setMobileActive(false);
+    }
+    return () => clearTimeout(timer);
+  }, [inView]);
+
+  const isActive = canHover ? hovered : mobileActive;
 
   return (
     <motion.div
+      ref={ref}
       className={styles.card}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
+      onHoverStart={canHover ? () => setHovered(true) : undefined}
+      onHoverEnd={canHover ? () => setHovered(false) : undefined}
     >
       <div className={styles.doodle}>
-        <Doodle isHovered={hovered} />
+        <Doodle isHovered={isActive} />
       </div>
       <div className={styles.info}>
         <h4 className={styles.label}>{hobby.label}</h4>
