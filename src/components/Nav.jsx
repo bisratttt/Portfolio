@@ -6,6 +6,7 @@ import styles from './Nav.module.css';
 const links = [
   { label: 'about', href: '#about' },
   { label: 'experience', href: '#experience' },
+  { label: 'side quests', href: '#side-quests' },
   { label: 'education', href: '#education' },
   { label: 'skills', href: '#skills' },
   { label: 'hobbies', href: '#hobbies' },
