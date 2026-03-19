@@ -1,6 +1,7 @@
-import { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useState, useEffect, useId } from 'react';
+import { motion, useInView, useSpring, useMotionValue, useTransform, animate as fmAnimate } from 'framer-motion';
 import SectionHeading from './SectionHeading';
+import { SkillPill } from './SkillPill';
 import styles from './Experience.module.css';
 
 function B({ children }) {
@@ -14,6 +15,7 @@ const experiences = [
     location: 'San Francisco, CA',
     period: 'Aug 2024 - Present',
     animation: 'atlassian',
+    tech: ['TypeScript', 'Python', 'Kubernetes', 'GCP', 'Terraform', 'Docker', 'Knative'],
     bullets: [
       <>Designed an <B>abstraction layer</B> for Atlassian Guard Premium features, ensuring feature isolation and scaled to <B>1M+ customers</B>.</>,
       <>Designed and developed <B>data security policies</B> and their testing framework, enabling enterprise compliance with <B>HIPAA and GDPR</B>.</>,
@@ -28,6 +30,7 @@ const experiences = [
     location: 'San Francisco, CA',
     period: 'Jul 2023 - Aug 2024',
     animation: 'atlassian',
+    tech: ['TypeScript', 'Java', 'GraphQL', 'Splunk', 'Bitbucket Pipelines'],
     bullets: [
       <>Designed and implemented admin-facing <B>data classification tools</B> for Confluence, empowering organization admins to manage data governance for <B>2M+ users</B>.</>,
       <>Built and owned a <B>real-time monitoring framework</B> for 300+ public APIs, implementing app access permission validation that secured a <B>platform-wide security rollout</B>.</>,
@@ -42,6 +45,7 @@ const experiences = [
     location: 'Washington, DC',
     period: 'May 2022 - Aug 2022',
     animation: 'meta',
+    tech: ['PHP', 'React.js', 'GraphQL', 'Node.js'],
     bullets: [
       <>Engineered <B>full-stack correspondence platform</B> enabling communication between external users and employees, scaling to process <B>100,000+ requests</B> at launch.</>,
       <>Designed and implemented <B>configurable user preferences system</B>, improving user satisfaction metrics through personalized experience customization.</>,
@@ -84,40 +88,79 @@ function ThumbsUpBurst({ isActive }) {
 }
 
 function AtlassianLogo({ isActive }) {
-  // The Atlassian logo is a mountain/chevron shape split into two pieces.
-  // On scroll into view: left piece slides down-left slightly, right piece goes up-right,
-  // then both snap back — like a deploy completing.
+  const uid = useId();
+  const gradLeftId = `atl-gl-${uid}`;
+  const gradRightId = `atl-gr-${uid}`;
+  const clipId = `atl-clip-${uid}`;
+
+  // Water level: springs from bottom (32) to top (0)
+  const level = useSpring(32, { stiffness: 55, damping: 14 });
+  // Wave phase: oscillates continuously while active
+  const wavePhase = useMotionValue(0);
+
+  // Clip shape: quadratic-bezier wave top + solid bottom rectangle
+  const wavePath = useTransform([level, wavePhase], ([y, p]) => {
+    // Amplitude peaks mid-fill, zero when empty or full
+    const progress = (32 - y) / 32;
+    const amp = 3.5 * Math.sin(progress * Math.PI);
+    const w1 = amp * Math.sin(p);
+    const w2 = amp * Math.sin(p + Math.PI);
+    return `M 0,${y} Q 8,${y + w1} 16,${y} Q 24,${y + w2} 32,${y} L 32,32 L 0,32 Z`;
+  });
+
+  useEffect(() => {
+    level.set(isActive ? 0 : 32);
+
+    if (isActive) {
+      const ctrl = fmAnimate(wavePhase, Math.PI * 8, {
+        duration: 2.5,
+        ease: 'linear',
+        repeat: Infinity,
+      });
+      return () => ctrl.stop();
+    } else {
+      wavePhase.set(0);
+    }
+  }, [isActive]);
+
   return (
     <div className={styles.atlassianLogo}>
       <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
         <defs>
-          <linearGradient id="atl-grad-left" x1="0" y1="0" x2="1" y2="1">
+          <linearGradient id={gradLeftId} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#0052CC" />
             <stop offset="100%" stopColor="#0065FF" />
           </linearGradient>
-          <linearGradient id="atl-grad-right" x1="0" y1="1" x2="1" y2="0">
+          <linearGradient id={gradRightId} x1="0" y1="1" x2="1" y2="0">
             <stop offset="0%" stopColor="#2684FF" />
             <stop offset="100%" stopColor="#4C9AFF" />
           </linearGradient>
+          <clipPath id={clipId}>
+            <motion.path d={wavePath} />
+          </clipPath>
         </defs>
 
-        {/* Left lower chevron piece */}
-        <motion.path
+        {/* Gray base — always visible */}
+        <path
           d="M10.5 18.2C10.3 17.9 9.9 17.9 9.7 18.2L4.1 29.1C3.9 29.4 4.1 29.8 4.5 29.8H12.5C12.7 29.8 12.9 29.7 13 29.5C15 25.6 13.4 21 10.5 18.2Z"
-          fill={isActive ? 'url(#atl-grad-left)' : 'var(--icon-dim)'}
-          animate={isActive ? { x: [-2, 0], y: [2, 0] } : { x: 0, y: 0 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          style={{ transition: 'fill 0.3s' }}
+          fill="var(--icon-dim)"
+        />
+        <path
+          d="M14.8 3.3C11.5 9.2 11.7 16.1 15.2 21.8L20.1 29.5C20.2 29.7 20.4 29.8 20.6 29.8H28.6C28.9 29.8 29.2 29.4 29 29.1L16.4 3.3C16.2 2.9 15.7 2.9 14.8 3.3Z"
+          fill="var(--icon-dim)"
         />
 
-        {/* Right tall chevron piece */}
-        <motion.path
-          d="M14.8 3.3C11.5 9.2 11.7 16.1 15.2 21.8L20.1 29.5C20.2 29.7 20.4 29.8 20.6 29.8H28.6C28.9 29.8 29.2 29.4 29 29.1L16.4 3.3C16.2 2.9 15.7 2.9 14.8 3.3Z"
-          fill={isActive ? 'url(#atl-grad-right)' : 'var(--icon-dim)'}
-          animate={isActive ? { x: [2, 0], y: [-2, 0] } : { x: 0, y: 0 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          style={{ transition: 'fill 0.3s' }}
-        />
+        {/* Colored flood layer — clipped by the rising wave */}
+        <g clipPath={`url(#${clipId})`}>
+          <path
+            d="M10.5 18.2C10.3 17.9 9.9 17.9 9.7 18.2L4.1 29.1C3.9 29.4 4.1 29.8 4.5 29.8H12.5C12.7 29.8 12.9 29.7 13 29.5C15 25.6 13.4 21 10.5 18.2Z"
+            fill={`url(#${gradLeftId})`}
+          />
+          <path
+            d="M14.8 3.3C11.5 9.2 11.7 16.1 15.2 21.8L20.1 29.5C20.2 29.7 20.4 29.8 20.6 29.8H28.6C28.9 29.8 29.2 29.4 29 29.1L16.4 3.3C16.2 2.9 15.7 2.9 14.8 3.3Z"
+            fill={`url(#${gradRightId})`}
+          />
+        </g>
       </svg>
     </div>
   );
@@ -228,6 +271,12 @@ function ExperienceCard({ exp, index }) {
           <li key={i} className={styles.bullet}>{bullet}</li>
         ))}
       </ul>
+
+      {exp.tech && (
+        <div className={styles.techRow}>
+          {exp.tech.map((t) => <SkillPill key={t} name={t} />)}
+        </div>
+      )}
 
     </motion.div>
   );

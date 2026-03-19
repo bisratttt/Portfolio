@@ -103,11 +103,3 @@
   margin-top: 0.6rem;
   flex-wrap: wrap;
 }
-
-.tag {
-  font-size: 0.65rem;
-  color: var(--tag-text);
-  border: 1px solid var(--tag-border);
-  padding: 0.15rem 0.45rem;
-  border-radius: 2px;
-}

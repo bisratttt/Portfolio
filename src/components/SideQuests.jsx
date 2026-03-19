@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { FaGithub } from 'react-icons/fa';
 import SectionHeading from './SectionHeading';
+import { SkillPill } from './SkillPill';
 import styles from './SideQuests.module.css';
 
 const quests = [
@@ -9,7 +10,7 @@ const quests = [
     tagline: 'any API → MCP server, zero context bloat',
     description:
       'CLI tool that converts OpenAPI specs, GraphQL schemas, Postman collections, and HAR files into production-ready MCP servers. Instead of one tool per endpoint (which wrecks agent context), it generates exactly two tools — search_docs (semantic vector search via Qwen3 embeddings) and call_api — so context stays clean whether the API has 10 endpoints or 10,000.',
-    tech: ['typescript', 'mcp', 'cli', 'embeddings', 'sqlite'],
+    tech: ['TypeScript', 'SQLite', 'mcp', 'cli', 'embeddings'],
     github: 'https://github.com/bisratttt/build-mcp/tree/main',
     live: 'https://bisratttt.github.io/build-mcp/',
   },
@@ -62,9 +63,7 @@ function QuestCard({ quest }) {
       <p className={styles.tagline}>{quest.tagline}</p>
       <p className={styles.description}>{quest.description}</p>
       <div className={styles.tech}>
-        {quest.tech.map((t) => (
-          <span key={t} className={styles.tag}>{t}</span>
-        ))}
+        {quest.tech.map((t) => <SkillPill key={t} name={t} />)}
       </div>
     </motion.div>
   );

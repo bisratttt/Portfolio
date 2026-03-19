@@ -5,14 +5,12 @@ import {
   SiHtml5, SiSwift, SiGraphql, SiReact, SiNodedotjs,
   SiTerraform, SiKubernetes, SiExpress, SiApollographql,
   SiBootstrap, SiGit, SiMercurial, SiDocker, SiGooglecloud,
-  SiSplunk, SiBitbucket, SiWebpack, SiFirebase, SiHeroku,
+  SiSplunk, SiBitbucket, SiWebpack, SiFirebase, SiHeroku, SiSqlite,
 } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa';
-import SectionHeading from './SectionHeading';
-import styles from './Skills.module.css';
+import styles from './SkillPill.module.css';
 
-// ── Icon map: skill name → { Icon, color } ───────────────────────────────────
-const iconMap = {
+export const iconMap = {
   'Java':                 { Icon: SiOpenjdk,            color: '#E76F00' },
   'Python':               { Icon: SiPython,             color: '#3572A5' },
   'C':                    { Icon: SiC,                  color: '#A8B9CC' },
@@ -39,37 +37,16 @@ const iconMap = {
   'AWS':                  { Icon: FaAws,                color: '#FF9900' },
   'Firebase':             { Icon: SiFirebase,           color: '#FFCA28' },
   'Heroku':               { Icon: SiHeroku,             color: '#430098' },
+  'SQLite':               { Icon: SiSqlite,             color: '#003B57' },
 };
 
-// ── Data ─────────────────────────────────────────────────────────────────────
-
-const skillGroups = [
-  {
-    category: 'languages',
-    proficient: ['Java', 'Python', 'C', 'PHP', 'JavaScript', 'TypeScript', 'YAML'],
-    familiar: ['HTML/CSS', 'Swift', 'MATLAB'],
-  },
-  {
-    category: 'frameworks',
-    proficient: ['GraphQL', 'React.js', 'Node.js', 'REST', 'Terraform', 'Kubernetes', 'Knative'],
-    familiar: ['Express.js', 'Apollo', 'Relay', 'Bootstrap'],
-  },
-  {
-    category: 'tools',
-    proficient: ['Git', 'Mercurial', 'Docker', 'GCP', 'Splunk', 'SignalFX', 'Bitbucket Pipelines', 'k9s'],
-    familiar: ['Webpack', 'AWS', 'Firebase', 'Heroku'],
-  },
-];
-
-// ── Components ────────────────────────────────────────────────────────────────
-
-function SkillPill({ name, familiar }) {
+export function SkillPill({ name }) {
   const [hovered, setHovered] = useState(false);
   const entry = iconMap[name];
 
   return (
     <motion.span
-      className={`${styles.pill} ${familiar ? styles.familiar : ''}`}
+      className={styles.pill}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       whileHover={{ y: -2 }}
@@ -93,34 +70,3 @@ function SkillPill({ name, familiar }) {
     </motion.span>
   );
 }
-
-function SkillGroup({ group }) {
-  return (
-    <div className={styles.group}>
-      <h4 className={styles.category}>{group.category}</h4>
-      <div className={styles.pills}>
-        {group.proficient.map((skill) => (
-          <SkillPill key={skill} name={skill} familiar={false} />
-        ))}
-        {group.familiar.map((skill) => (
-          <SkillPill key={skill} name={skill} familiar={true} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Skills() {
-  return (
-    <section id="skills">
-      <SectionHeading>skills</SectionHeading>
-      <div className={styles.grid}>
-        {skillGroups.map((group) => (
-          <SkillGroup key={group.category} group={group} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-export default Skills;

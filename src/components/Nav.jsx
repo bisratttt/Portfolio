@@ -8,7 +8,6 @@ const links = [
   { label: 'experience', href: '#experience' },
   { label: 'side quests', href: '#side-quests' },
   { label: 'education', href: '#education' },
-  { label: 'skills', href: '#skills' },
   { label: 'hobbies', href: '#hobbies' },
   { label: 'contact', href: '#contact' },
 ];
