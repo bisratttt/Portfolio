@@ -30,12 +30,12 @@ function About() {
           <div className={styles.detail}>
             <span className={styles.label}>resume</span>
             <a
-              href={`${import.meta.env.BASE_URL}bisratZerihun_Resume.docx.pdf`}
+              href={`${import.meta.env.BASE_URL}bisratZerihunResume.pdf`}
               className={styles.resumeLink}
               target="_blank"
               rel="noopener noreferrer"
             >
-              bisratZerihun_Resume.pdf
+              bisratZerihunResume.pdf
               <motion.span
                 className={styles.arrow}
                 whileHover={{ x: 4 }}
