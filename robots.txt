@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bisrat.me/sitemap.xml
