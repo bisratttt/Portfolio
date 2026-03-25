@@ -255,10 +255,10 @@ function ExperienceCard({ exp, index }) {
       <div className={styles.cardHeader}>
         <div className={styles.companyRow}>
           {exp.animation === 'atlassian' && <AtlassianLogo isActive={isActive} />}
-          <h3 className={styles.company}>{exp.company}</h3>
           {exp.animation === 'meta' && (
             <MetaLike isActive={isActive} onClick={handleMetaClick} showBurst={showBurst} />
           )}
+          <h3 className={styles.company}>{exp.company}</h3>
         </div>
         <span className={styles.period}>{exp.period}</span>
       </div>
@@ -274,7 +274,7 @@ function ExperienceCard({ exp, index }) {
 
       {exp.tech && (
         <div className={styles.techRow}>
-          {exp.tech.map((t) => <SkillPill key={t} name={t} />)}
+          {exp.tech.map((t, i) => <SkillPill key={t} name={t} index={i} />)}
         </div>
       )}
 

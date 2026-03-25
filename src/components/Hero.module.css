@@ -28,11 +28,11 @@
 }
 
 .nameText {
-  transition: text-shadow 0.2s;
+  transition: filter 0.2s;
 }
 
 .name:hover .nameText {
-  text-shadow: 0 0 40px rgba(128, 128, 128, 0.2);
+  filter: drop-shadow(0 0 20px rgba(128, 128, 128, 0.25));
 }
 
 .cursor {
@@ -41,11 +41,20 @@
   color: var(--gray);
 }
 
+.greetingSlot {
+  height: 1.5rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
 .greeting {
   font-size: 0.9rem;
   color: var(--gray);
-  margin-top: 1rem;
   font-style: italic;
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
 }
 
 .tagline {
@@ -62,4 +71,7 @@
   transform: translateX(-50%);
   font-size: 1rem;
   color: var(--dark-gray);
+  cursor: pointer;
+  padding: 1.5rem 2.5rem;
 }
+

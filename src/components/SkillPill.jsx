@@ -10,6 +10,8 @@ import {
 import { FaAws } from 'react-icons/fa';
 import styles from './SkillPill.module.css';
 
+const canHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
+
 export const iconMap = {
   'Java':                 { Icon: SiOpenjdk,            color: '#E76F00' },
   'Python':               { Icon: SiPython,             color: '#3572A5' },
@@ -40,17 +42,20 @@ export const iconMap = {
   'SQLite':               { Icon: SiSqlite,             color: '#003B57' },
 };
 
-export function SkillPill({ name }) {
+export function SkillPill({ name, index = 0 }) {
   const [hovered, setHovered] = useState(false);
   const entry = iconMap[name];
 
   return (
     <motion.span
       className={styles.pill}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      whileHover={{ y: -2 }}
-      transition={{ duration: 0.15 }}
+      onHoverStart={canHover ? () => setHovered(true) : undefined}
+      onHoverEnd={canHover ? () => setHovered(false) : undefined}
+      whileHover={canHover ? { y: -2 } : undefined}
+      initial={{ opacity: 0, y: 4 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.2, delay: index * 0.05, ease: [0.23, 1, 0.32, 1] }}
     >
       {entry && (
         <motion.span

@@ -25,7 +25,7 @@ function ThemeToggle() {
       <motion.div
         initial={false}
         animate={{ rotate: isDark ? 180 : 0 }}
-        transition={{ duration: 0.4, ease: 'easeInOut' }}
+        transition={{ duration: 0.22, ease: 'easeOut' }}
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         {isDark ? (
@@ -86,7 +86,7 @@ function Nav() {
             className={styles.mobileLinks}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -20, transition: { duration: 0.12 } }}
             transition={{ duration: 0.2 }}
           >
             {links.map((link) => (

@@ -63,7 +63,7 @@ function QuestCard({ quest }) {
       <p className={styles.tagline}>{quest.tagline}</p>
       <p className={styles.description}>{quest.description}</p>
       <div className={styles.tech}>
-        {quest.tech.map((t) => <SkillPill key={t} name={t} />)}
+        {quest.tech.map((t, i) => <SkillPill key={t} name={t} index={i} />)}
       </div>
     </motion.div>
   );

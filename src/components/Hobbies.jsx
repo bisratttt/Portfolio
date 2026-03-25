@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useAnimation, useMotionValue, useInView } from 'framer-motion';
+import { motion, useAnimation, useMotionValue, useInView, useReducedMotion } from 'framer-motion';
 import SectionHeading from './SectionHeading';
 import styles from './Hobbies.module.css';
 import { useTheme } from '../context/ThemeContext';
 
 // ── B: Succulent Bloom ────────────────────────────────────────────────────────
 function PlantDoodle({ isHovered }) {
+  const shouldReduceMotion = useReducedMotion();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const green      = isHovered ? (isDark ? '#4CAF50' : '#388E3C') : 'var(--icon-dim)';
@@ -133,7 +134,7 @@ function PlantDoodle({ isHovered }) {
               cx: px,
               cy: py,
               opacity: isHovered ? 1 : 0,
-              scale: isHovered ? 1 : 0,
+              scale: isHovered ? 1 : 0.8,
             }}
             transition={{ duration: 0.35, delay: 0.3 + i * 0.04, ease: 'backOut' }}
             style={{ transformOrigin: `${px}px ${py}px`, transition: 'stroke 0.3s' }}
@@ -147,13 +148,13 @@ function PlantDoodle({ isHovered }) {
         fill="none"
         stroke={petalInner}
         strokeWidth="1.2"
-        animate={{ opacity: isHovered ? 1 : 0, scale: isHovered ? 1 : 0 }}
+        animate={{ opacity: isHovered ? 1 : 0, scale: isHovered ? 1 : 0.8 }}
         transition={{ duration: 0.3, delay: 0.55 }}
         style={{ transformOrigin: '24px 14px', transition: 'stroke 0.3s' }}
       />
 
       {/* Water drops falling on hover */}
-      {isHovered && [0, 1, 2].map((i) => (
+      {isHovered && !shouldReduceMotion && [0, 1, 2].map((i) => (
         <motion.circle
           key={`drop-${i}`}
           cx={18 + i * 6}
@@ -173,9 +174,10 @@ function PlantDoodle({ isHovered }) {
 function TennisDoodle({ isHovered }) {
   const ballControls = useAnimation();
   const shadowControls = useAnimation();
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (isHovered) {
+    if (isHovered && !shouldReduceMotion) {
       ballControls.start({
         y: [-9, 0, -9],
         transition: { duration: 0.55, repeat: Infinity, ease: 'easeInOut' },
@@ -259,6 +261,7 @@ function TennisDoodle({ isHovered }) {
 
 // ── A: Vinyl Record ───────────────────────────────────────────────────────────
 function ThriftDoodle({ isHovered }) {
+  const shouldReduceMotion = useReducedMotion();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const recordColor = isHovered ? (isDark ? '#1a1a2e' : '#37474F') : 'var(--icon-dim)';
@@ -272,8 +275,8 @@ function ThriftDoodle({ isHovered }) {
     <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
       {/* Record body — spins on hover */}
       <motion.g
-        animate={isHovered ? { rotate: 360 } : { rotate: 0 }}
-        transition={isHovered ? { duration: 3, repeat: Infinity, ease: 'linear' } : { duration: 0.5 }}
+        animate={isHovered && !shouldReduceMotion ? { rotate: 360 } : { rotate: 0 }}
+        transition={isHovered && !shouldReduceMotion ? { duration: 3, repeat: Infinity, ease: 'linear' } : { duration: 0.5 }}
         style={{ transformOrigin: '24px 26px' }}
       >
         {/* Outer edge */}
