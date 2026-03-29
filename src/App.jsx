@@ -1,3 +1,4 @@
+import { Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -6,8 +7,9 @@ import Education from './components/Education';
 import Hobbies from './components/Hobbies';
 import SideQuests from './components/SideQuests';
 import Contact from './components/Contact';
+import NotFound from './components/NotFound';
 
-function App() {
+function Home() {
   return (
     <>
       <Nav />
@@ -21,6 +23,15 @@ function App() {
         <Contact />
       </main>
     </>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
