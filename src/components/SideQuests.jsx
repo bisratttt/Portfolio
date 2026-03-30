@@ -11,7 +11,7 @@ const quests = [
     tagline: 'fine-tuned LLM for system design reasoning',
     description:
       'A LoRA fine-tune of GPT-OSS 20B trained on system design and software architecture reasoning. Built a data generation pipeline that produced 1,787 training conversations covering distributed systems, scaling patterns, and infrastructure trade-offs.',
-    tech: ['python', 'huggingface', 'LoRA', 'anthropic'],
+    tech: ['Python', 'HuggingFace', 'LoRA'],
     github: 'https://github.com/bisratttt/architectLLM',
     live: 'https://bisratttt.github.io/architectLLM/',
     huggingface: 'https://huggingface.co/bisratz/architectLLM-lora',

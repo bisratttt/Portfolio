@@ -6,6 +6,7 @@ import {
   SiTerraform, SiKubernetes, SiExpress, SiApollographql,
   SiBootstrap, SiGit, SiMercurial, SiDocker, SiGooglecloud,
   SiSplunk, SiBitbucket, SiWebpack, SiFirebase, SiHeroku, SiSqlite,
+  SiHuggingface,
 } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa';
 import styles from './SkillPill.module.css';
@@ -40,6 +41,7 @@ export const iconMap = {
   'Firebase':             { Icon: SiFirebase,           color: '#FFCA28' },
   'Heroku':               { Icon: SiHeroku,             color: '#430098' },
   'SQLite':               { Icon: SiSqlite,             color: '#003B57' },
+  'HuggingFace':          { Icon: SiHuggingface,        color: '#FFD21E' },
 };
 
 export function SkillPill({ name, index = 0 }) {
