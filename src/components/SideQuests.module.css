@@ -33,6 +33,12 @@
   flex-wrap: wrap;
 }
 
+.headerLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .name {
   font-size: 0.95rem;
   font-weight: 500;

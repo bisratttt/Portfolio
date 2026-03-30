@@ -1,10 +1,21 @@
 import { motion } from 'framer-motion';
 import { FaGithub } from 'react-icons/fa';
+import { SiHuggingface } from 'react-icons/si';
 import SectionHeading from './SectionHeading';
 import { SkillPill } from './SkillPill';
 import styles from './SideQuests.module.css';
 
 const quests = [
+  {
+    name: 'architectLLM',
+    tagline: 'fine-tuned LLM for system design reasoning',
+    description:
+      'A LoRA fine-tune of GPT-OSS 20B trained on system design and software architecture reasoning. Built a data generation pipeline that produced 1,787 training conversations covering distributed systems, scaling patterns, and infrastructure trade-offs.',
+    tech: ['python', 'huggingface', 'LoRA', 'anthropic'],
+    github: 'https://github.com/bisratttt/architectLLM',
+    live: 'https://bisratttt.github.io/architectLLM/',
+    huggingface: 'https://huggingface.co/bisratz/architectLLM-lora',
+  },
   {
     name: 'build-mcp',
     tagline: 'any API → MCP server, zero context bloat',
@@ -48,17 +59,32 @@ function QuestCard({ quest }) {
             </motion.span>
           </a>
         </motion.h3>
-        <a
-          href={quest.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.githubLink}
-          onClick={(e) => e.stopPropagation()}
-          aria-label="GitHub"
-        >
-          <FaGithub className={styles.githubIcon} />
-          github
-        </a>
+        <div className={styles.headerLinks}>
+          {quest.huggingface && (
+            <a
+              href={quest.huggingface}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.githubLink}
+              onClick={(e) => e.stopPropagation()}
+              aria-label="HuggingFace"
+            >
+              <SiHuggingface className={styles.githubIcon} />
+              huggingface
+            </a>
+          )}
+          <a
+            href={quest.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.githubLink}
+            onClick={(e) => e.stopPropagation()}
+            aria-label="GitHub"
+          >
+            <FaGithub className={styles.githubIcon} />
+            github
+          </a>
+        </div>
       </div>
       <p className={styles.tagline}>{quest.tagline}</p>
       <p className={styles.description}>{quest.description}</p>
