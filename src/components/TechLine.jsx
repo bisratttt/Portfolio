@@ -6,10 +6,10 @@ import {
   SiTerraform, SiKubernetes, SiExpress, SiApollographql,
   SiBootstrap, SiGit, SiMercurial, SiDocker, SiGooglecloud,
   SiSplunk, SiBitbucket, SiWebpack, SiFirebase, SiHeroku, SiSqlite,
-  SiHuggingface, SiGooglecolab,
+  SiHuggingface, SiGooglecolab, SiKnative,
 } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa';
-import styles from './SkillPill.module.css';
+import styles from './TechLine.module.css';
 
 const canHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 
@@ -27,6 +27,7 @@ export const iconMap = {
   'Node.js':              { Icon: SiNodedotjs,          color: '#539E43' },
   'Terraform':            { Icon: SiTerraform,          color: '#7B42BC' },
   'Kubernetes':           { Icon: SiKubernetes,         color: '#326CE5' },
+  'Knative':              { Icon: SiKnative,            color: '#0865AD' },
   'Express.js':           { Icon: SiExpress,            color: 'var(--icon-bright)' },
   'Apollo':               { Icon: SiApollographql,      color: '#311C87' },
   'Bootstrap':            { Icon: SiBootstrap,          color: '#7952B3' },
@@ -45,30 +46,24 @@ export const iconMap = {
   'Google Colab':         { Icon: SiGooglecolab,        color: '#F9AB00' },
 };
 
-export function SkillPill({ name, index = 0 }) {
+function TechItem({ name }) {
   const [hovered, setHovered] = useState(false);
   const entry = iconMap[name];
 
   return (
     <motion.span
-      className={styles.pill}
+      className={styles.item}
       onHoverStart={canHover ? () => setHovered(true) : undefined}
       onHoverEnd={canHover ? () => setHovered(false) : undefined}
-      whileHover={canHover ? { y: -2 } : undefined}
-      initial={{ opacity: 0, y: 4 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.2, delay: index * 0.05, ease: [0.23, 1, 0.32, 1] }}
     >
       {entry && (
         <motion.span
-          className={styles.pillIcon}
-          animate={{ opacity: hovered ? 1 : 0.5, scale: hovered ? 1.1 : 1 }}
+          className={styles.icon}
+          animate={{ opacity: hovered ? 1 : 0.55, scale: hovered ? 1.15 : 1 }}
           transition={{ duration: 0.15 }}
           style={{
             color: hovered ? entry.color : 'var(--icon-mid)',
             transition: 'color 0.2s',
-            display: 'flex',
           }}
         >
           <entry.Icon size={11} />
@@ -78,3 +73,25 @@ export function SkillPill({ name, index = 0 }) {
     </motion.span>
   );
 }
+
+/** Dot-separated tech run, like \techstack{} in the LaTeX resume. */
+export function TechLine({ items }) {
+  return (
+    <motion.div
+      className={styles.line}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4 }}
+    >
+      {items.map((name, i) => (
+        <span key={name} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+          {i > 0 && <span className={styles.sep}>·</span>}
+          <TechItem name={name} />
+        </span>
+      ))}
+    </motion.div>
+  );
+}
+
+export default TechLine;

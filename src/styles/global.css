@@ -15,13 +15,18 @@
   --border: #ddd;
   --card-border: #e0e0e0;
   --card-hover: #bbb;
-  --nav-bg: rgba(245, 245, 240, 0.88);
   --icon-dim: #999;
   --icon-bright: #0a0a0a;
   --icon-mid: #555;
   --tag-border: #ccc;
   --tag-text: #555;
+
+  /* printed-page rules */
+  --rule: #1a1a1a;
+  --hairline: #d5d5cd;
+
   --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+  --page-width: 760px;
 }
 
 [data-theme='dark'] {
@@ -33,17 +38,14 @@
   --border: #1a1a1a;
   --card-border: #1a1a1a;
   --card-hover: #333;
-  --nav-bg: rgba(10, 10, 10, 0.88);
   --icon-dim: #555;
   --icon-bright: #fff;
   --icon-mid: #888;
   --tag-border: #333;
   --tag-text: #777;
-}
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  --rule: #e8e8e8;
+  --hairline: #262626;
 }
 
 body {
@@ -66,27 +68,16 @@ a {
   color: var(--bg);
 }
 
+/* The whole page is the sheet — one continuous column, top to bottom. */
 main {
-  max-width: 720px;
+  max-width: var(--page-width);
   margin: 0 auto;
-  padding: 0 2rem 4rem;
+  padding: 4rem 2.5rem 5rem;
 }
 
-section {
-  padding-top: 4rem;
-}
-
-section:first-child {
-  padding-top: 0;
-}
-
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   main {
-    padding: 0 1.5rem 3rem;
-  }
-
-  section {
-    padding-top: 3rem;
+    padding: 2.5rem 1.5rem 3.5rem;
   }
 }
 
@@ -98,8 +89,36 @@ section:first-child {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
 
-  html {
-    scroll-behavior: auto;
+/* Cmd+P should produce an actual resume, not a screenshot of a website. */
+@media print {
+  :root {
+    --bg: #fff;
+    --text: #000;
+    --gray: #222;
+    --dark-gray: #444;
+    --rule: #000;
+    --hairline: #999;
+    --icon-dim: #888;
+    --icon-mid: #444;
+  }
+
+  body {
+    background: #fff;
+    line-height: 1.4;
+  }
+
+  main {
+    max-width: none;
+    padding: 0;
+  }
+
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  section {
+    break-inside: avoid;
   }
 }

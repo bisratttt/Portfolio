@@ -1,0 +1,115 @@
+.entry {
+  margin-bottom: 1.5rem;
+}
+
+.entry:last-child {
+  margin-bottom: 0;
+}
+
+/* Company / school / project line — bold left, location right. */
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.left {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.right {
+  font-size: 0.72rem;
+  color: var(--dark-gray);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Role line — italic left, dates right. */
+.subRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.1rem;
+}
+
+.subLeft {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--gray);
+}
+
+.subRight {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--dark-gray);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* A second role under the same employer sits slightly inset. */
+.nested {
+  margin-top: 1rem;
+  padding-left: 0.9rem;
+  border-left: 1px solid var(--hairline);
+}
+
+.bullets {
+  list-style: none;
+  margin-top: 0.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.bullet {
+  font-size: 0.78rem;
+  color: var(--gray);
+  line-height: 1.65;
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.bullet::before {
+  content: '•';
+  position: absolute;
+  left: 0.2rem;
+  color: var(--dark-gray);
+}
+
+.bold {
+  font-weight: 700;
+  color: var(--text);
+}
+
+@media (max-width: 520px) {
+  .row,
+  .subRow {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .right,
+  .subRight {
+    white-space: normal;
+  }
+}
+
+@media print {
+  .entry {
+    margin-bottom: 0.9rem;
+    break-inside: avoid;
+  }
+
+  .bullet {
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+}

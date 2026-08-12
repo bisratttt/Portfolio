@@ -1,53 +1,58 @@
-.grid {
+/* An illustrated interests list — four across, no card chrome. */
+.row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.8rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4rem;
 }
 
-@media (max-width: 500px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.card {
-  padding: 1.2rem;
-  border: 1px solid var(--card-border);
-  border-radius: 4px;
+.item {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: 0.8rem;
-  transition: border-color 0.3s;
+  gap: 0.1rem;
   cursor: default;
 }
 
-.card:hover {
-  border-color: var(--card-hover);
-}
-
 .doodle {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
+  justify-content: flex-start;
+  width: 44px;
+  height: 44px;
   overflow: visible;
-}
-
-.info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  margin-bottom: 0.15rem;
 }
 
 .label {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.76rem;
+  font-weight: 700;
 }
 
 .detail {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--gray);
-  line-height: 1.5;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+}
+
+@media print {
+  .row {
+    gap: 0.8rem;
+  }
+
+  .doodle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .detail {
+    font-size: 0.62rem;
+    line-height: 1.35;
+  }
 }

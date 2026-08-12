@@ -1,82 +1,5 @@
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-.card {
-  padding: 1.5rem;
-  border: 1px solid var(--card-border);
-  border-radius: 4px;
-  cursor: default;
-  position: relative;
-  transition: border-color 0.3s;
-}
-
-.card:hover {
-  border-color: var(--card-hover);
-}
-
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.3rem;
-}
-
-.companyRow {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.5rem;
-  position: relative;
-}
-
-.company {
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1;
-}
-
-.period {
-  font-size: 0.7rem;
-  color: var(--dark-gray);
-  white-space: nowrap;
-}
-
-.role {
-  font-size: 0.8rem;
-  color: var(--gray);
-  font-style: italic;
-}
-
-.location {
-  font-size: 0.7rem;
-  color: var(--dark-gray);
-  margin-bottom: 0.8rem;
-}
-
-.bullets {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.bullet {
-  font-size: 0.75rem;
-  color: var(--gray);
-  line-height: 1.6;
-  padding-left: 1rem;
-  position: relative;
-}
-
-.bullet::before {
-  content: '-';
-  position: absolute;
-  left: 0;
-  color: var(--dark-gray);
-}
-
+/* No card chrome here — the Entry primitives carry the layout.
+   What remains is scaffolding for the company logo animations. */
 
 .metaReaction {
   position: relative;
@@ -117,6 +40,7 @@
   top: 50%;
   left: 50%;
   pointer-events: none;
+  z-index: 2;
 }
 
 .thumbsUp {
@@ -129,16 +53,4 @@
   align-items: center;
   flex-shrink: 0;
   line-height: 0;
-}
-
-.bold {
-  font-weight: 600;
-  color: var(--text);
-}
-
-.techRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: 0.9rem;
 }

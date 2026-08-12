@@ -1,0 +1,43 @@
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.1rem 0.4rem;
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--tag-text);
+  line-height: 1.9;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: default;
+  transition: color 0.2s;
+}
+
+.item:hover {
+  color: var(--text);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.sep {
+  color: var(--dark-gray);
+  user-select: none;
+}
+
+@media print {
+  .line {
+    margin-top: 0.3rem;
+    font-size: 0.65rem;
+    line-height: 1.5;
+  }
+}

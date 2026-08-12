@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { FaGithub } from 'react-icons/fa';
 import { SiHuggingface } from 'react-icons/si';
-import SectionHeading from './SectionHeading';
-import { SkillPill } from './SkillPill';
+import Section from './Section';
+import { Entry, TitleRow, Bullets } from './Entry';
+import { TechLine } from './TechLine';
 import styles from './SideQuests.module.css';
 
 const quests = [
@@ -27,85 +28,88 @@ const quests = [
   },
 ];
 
-function QuestCard({ quest }) {
+function QuestLinks({ quest }) {
   return (
-    <motion.div className={styles.card} whileHover="hover">
-      <div className={styles.header}>
-        <motion.h3 className={styles.name}>
-          <a
-            href={quest.live || quest.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.nameLink}
+    <span className={styles.links} data-print-hide>
+      {quest.huggingface && (
+        <motion.a
+          href={quest.huggingface}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.iconLink}
+          aria-label="HuggingFace"
+          whileHover={{ y: -1 }}
+          transition={{ duration: 0.15 }}
+        >
+          <SiHuggingface className={styles.icon} />
+          huggingface
+        </motion.a>
+      )}
+      <motion.a
+        href={quest.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.iconLink}
+        aria-label="GitHub"
+        whileHover={{ y: -1 }}
+        transition={{ duration: 0.15 }}
+      >
+        <FaGithub className={styles.icon} />
+        github
+      </motion.a>
+    </span>
+  );
+}
+
+function QuestEntry({ quest }) {
+  return (
+    <Entry whileHover="hover" initial="rest" animate="rest">
+      <TitleRow right={<QuestLinks quest={quest} />}>
+        <a
+          href={quest.live || quest.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.nameLink}
+        >
+          <motion.span
+            variants={{
+              rest: { textDecorationColor: 'transparent' },
+              hover: { textDecorationColor: 'currentColor' },
+            }}
+            style={{
+              textDecorationLine: 'underline',
+              textUnderlineOffset: '4px',
+              textDecorationColor: 'transparent',
+            }}
+            transition={{ duration: 0.2 }}
           >
-            <motion.span
-              className={styles.nameText}
-              variants={{
-                hover: {
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '4px',
-                  fontWeight: 700,
-                },
-              }}
-            >
-              {quest.name}
-            </motion.span>
-            <motion.span
-              className={styles.arrow}
-              variants={{ hover: { x: 6, opacity: 1 } }}
-              transition={{ duration: 0.2 }}
-            >
-              {' ->'}
-            </motion.span>
-          </a>
-        </motion.h3>
-        <div className={styles.headerLinks}>
-          {quest.huggingface && (
-            <a
-              href={quest.huggingface}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.githubLink}
-              onClick={(e) => e.stopPropagation()}
-              aria-label="HuggingFace"
-            >
-              <SiHuggingface className={styles.githubIcon} />
-              huggingface
-            </a>
-          )}
-          <a
-            href={quest.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.githubLink}
-            onClick={(e) => e.stopPropagation()}
-            aria-label="GitHub"
+            {quest.name}
+          </motion.span>
+          <motion.span
+            className={styles.arrow}
+            variants={{ rest: { x: 0, opacity: 0.35 }, hover: { x: 5, opacity: 1 } }}
+            transition={{ duration: 0.2 }}
           >
-            <FaGithub className={styles.githubIcon} />
-            github
-          </a>
-        </div>
-      </div>
+            {' ->'}
+          </motion.span>
+        </a>
+      </TitleRow>
+
       <p className={styles.tagline}>{quest.tagline}</p>
-      <p className={styles.description}>{quest.description}</p>
-      <div className={styles.tech}>
-        {quest.tech.map((t, i) => <SkillPill key={t} name={t} index={i} />)}
-      </div>
-    </motion.div>
+      <Bullets items={[quest.description]} />
+      <TechLine items={quest.tech} />
+    </Entry>
   );
 }
 
 function SideQuests() {
   return (
-    <section id="side-quests">
-      <SectionHeading>side quests</SectionHeading>
+    <Section title="Side Quests">
       <p className={styles.explainer}>stuff i'm building outside the 9-5</p>
-      <div className={styles.grid}>
-        {quests.map((quest) => (
-          <QuestCard key={quest.name} quest={quest} />
-        ))}
-      </div>
-    </section>
+      {quests.map((quest) => (
+        <QuestEntry key={quest.name} quest={quest} />
+      ))}
+    </Section>
   );
 }
 

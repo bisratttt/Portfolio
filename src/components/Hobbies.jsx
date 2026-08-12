@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation, useMotionValue, useInView, useReducedMotion } from 'framer-motion';
-import SectionHeading from './SectionHeading';
+import Section from './Section';
 import styles from './Hobbies.module.css';
 import { useTheme } from '../context/ThemeContext';
 
@@ -523,7 +523,7 @@ const hobbies = [
 
 const canHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 
-function HobbyCard({ hobby }) {
+function HobbyItem({ hobby }) {
   const ref = useRef(null);
   const inView = useInView(ref, { margin: '-80px' });
   const [hovered, setHovered] = useState(false);
@@ -546,31 +546,28 @@ function HobbyCard({ hobby }) {
   return (
     <motion.div
       ref={ref}
-      className={styles.card}
+      className={styles.item}
       onHoverStart={canHover ? () => setHovered(true) : undefined}
       onHoverEnd={canHover ? () => setHovered(false) : undefined}
     >
       <div className={styles.doodle}>
         <Doodle isHovered={isActive} />
       </div>
-      <div className={styles.info}>
-        <h4 className={styles.label}>{hobby.label}</h4>
-        <p className={styles.detail}>{hobby.detail}</p>
-      </div>
+      <h4 className={styles.label}>{hobby.label}</h4>
+      <p className={styles.detail}>{hobby.detail}</p>
     </motion.div>
   );
 }
 
 function Hobbies() {
   return (
-    <section id="hobbies">
-      <SectionHeading>hobbies</SectionHeading>
-      <div className={styles.grid}>
-        {hobbies.map((hobby, i) => (
-          <HobbyCard key={hobby.label} hobby={hobby} />
+    <Section title="Interests">
+      <div className={styles.row}>
+        {hobbies.map((hobby) => (
+          <HobbyItem key={hobby.label} hobby={hobby} />
         ))}
       </div>
-    </section>
+    </Section>
   );
 }
 

@@ -1,55 +1,57 @@
 import { useRef, useState, useEffect, useId } from 'react';
 import { motion, useInView, useSpring, useMotionValue, useTransform, animate as fmAnimate } from 'framer-motion';
-import SectionHeading from './SectionHeading';
-import { SkillPill } from './SkillPill';
+import Section from './Section';
+import { Entry, TitleRow, RoleRow, Nested, Bullets, B } from './Entry';
+import { TechLine } from './TechLine';
 import styles from './Experience.module.css';
-
-function B({ children }) {
-  return <strong className={styles.bold}>{children}</strong>;
-}
 
 const experiences = [
   {
     company: 'Atlassian',
-    role: 'Software Engineer II',
     location: 'San Francisco, CA',
-    period: 'Aug 2024 - Present',
     animation: 'atlassian',
-    tech: ['TypeScript', 'Python', 'Kubernetes', 'GCP', 'Terraform', 'Docker', 'Knative'],
-    bullets: [
-      <>Designed an <B>abstraction layer</B> for Atlassian Guard Premium features, ensuring feature isolation and scaled to <B>1M+ customers</B>.</>,
-      <>Designed and developed <B>data security policies</B> and their testing framework, enabling enterprise compliance with <B>HIPAA and GDPR</B>.</>,
-      <>Architected and led the migration of microservices from <B>AWS to GKE</B>, implementing automated deployment pipelines and <B>Knative serverless</B> infrastructure.</>,
-      <>Developed <B>AI-powered automation agents</B> using Chain-of-Thought reasoning and tool-calling to migrate legacy serverless functions to Knative, scaling across <B>400+ microservices</B>.</>,
-      <>Reduced deployment time by <B>95%</B> (1hr to 3min) by implementing <B>custom resource definitions</B> and serverless compute patterns.</>,
-    ],
-  },
-  {
-    company: 'Atlassian',
-    role: 'Software Engineer',
-    location: 'San Francisco, CA',
-    period: 'Jul 2023 - Aug 2024',
-    animation: 'atlassian',
-    tech: ['TypeScript', 'Java', 'GraphQL', 'Splunk', 'Bitbucket Pipelines'],
-    bullets: [
-      <>Designed and implemented admin-facing <B>data classification tools</B> for Confluence, empowering organization admins to manage data governance for <B>2M+ users</B>.</>,
-      <>Built and owned a <B>real-time monitoring framework</B> for 300+ public APIs, implementing app access permission validation that secured a <B>platform-wide security rollout</B>.</>,
-      <>Reduced implementation time by <B>60%</B> (5 weeks to 2 weeks) by building a data classification onboarding framework for enterprise customers.</>,
-      <>Decreased average PR cycle time by <B>83%</B> (3 days to 18 hours) through a <B>distributed code review system</B> and automated notification workflows.</>,
-      <>Designed and implemented client-facing <B>REST and GraphQL APIs</B> for data classification features in Confluence.</>,
+    roles: [
+      {
+        title: 'Software Engineer II',
+        period: 'Aug 2024 — Present',
+        tech: ['TypeScript', 'Python', 'Kubernetes', 'GCP', 'Terraform', 'Docker', 'Knative'],
+        bullets: [
+          <>Designed an <B>abstraction layer</B> for Atlassian Guard Premium features, ensuring feature isolation and scaled to <B>1M+ customers</B>.</>,
+          <>Designed and developed <B>data security policies</B> and their testing framework, enabling enterprise compliance with <B>HIPAA and GDPR</B>.</>,
+          <>Architected and led the migration of microservices from <B>AWS to GKE</B>, implementing automated deployment pipelines and <B>Knative serverless</B> infrastructure.</>,
+          <>Developed <B>AI-powered automation agents</B> using Chain-of-Thought reasoning and tool-calling to migrate legacy serverless functions to Knative, scaling across <B>400+ microservices</B>.</>,
+          <>Reduced deployment time by <B>95%</B> (1hr to 3min) by implementing <B>custom resource definitions</B> and serverless compute patterns.</>,
+        ],
+      },
+      {
+        title: 'Software Engineer',
+        period: 'Jul 2023 — Aug 2024',
+        tech: ['TypeScript', 'Java', 'GraphQL', 'Splunk', 'Bitbucket Pipelines'],
+        bullets: [
+          <>Designed and implemented admin-facing <B>data classification tools</B> for Confluence, empowering organization admins to manage data governance for <B>2M+ users</B>.</>,
+          <>Built and owned a <B>real-time monitoring framework</B> for 300+ public APIs, implementing app access permission validation that secured a <B>platform-wide security rollout</B>.</>,
+          <>Reduced implementation time by <B>60%</B> (5 weeks to 2 weeks) by building a data classification onboarding framework for enterprise customers.</>,
+          <>Decreased average PR cycle time by <B>83%</B> (3 days to 18 hours) through a <B>distributed code review system</B> and automated notification workflows.</>,
+          <>Designed and implemented client-facing <B>REST and GraphQL APIs</B> for data classification features in Confluence.</>,
+        ],
+      },
     ],
   },
   {
     company: 'Meta',
-    role: 'Software Engineer Intern',
     location: 'Washington, DC',
-    period: 'May 2022 - Aug 2022',
     animation: 'meta',
-    tech: ['PHP', 'React.js', 'GraphQL', 'Node.js'],
-    bullets: [
-      <>Engineered <B>full-stack correspondence platform</B> enabling communication between external users and employees, scaling to process <B>100,000+ requests</B> at launch.</>,
-      <>Designed and implemented <B>configurable user preferences system</B>, improving user satisfaction metrics through personalized experience customization.</>,
-      <>Presented technical documentation on new internal frameworks to <B>40+ engineers</B>, facilitating knowledge transfer and adoption.</>,
+    roles: [
+      {
+        title: 'Software Engineer Intern',
+        period: 'May 2022 — Aug 2022',
+        tech: ['PHP', 'React.js', 'GraphQL', 'Node.js'],
+        bullets: [
+          <>Engineered <B>full-stack correspondence platform</B> enabling communication between external users and employees, scaling to process <B>100,000+ requests</B> at launch.</>,
+          <>Designed and implemented <B>configurable user preferences system</B>, improving user satisfaction metrics through personalized experience customization.</>,
+          <>Presented technical documentation on new internal frameworks to <B>40+ engineers</B>, facilitating knowledge transfer and adoption.</>,
+        ],
+      },
     ],
   },
 ];
@@ -125,7 +127,7 @@ function AtlassianLogo({ isActive }) {
 
   return (
     <div className={styles.atlassianLogo}>
-      <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
         <defs>
           <linearGradient id={gradLeftId} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#0052CC" />
@@ -219,7 +221,17 @@ function MetaLike({ isActive, onClick, showBurst }) {
 
 const canHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 
-function ExperienceCard({ exp, index }) {
+function RoleBlock({ role }) {
+  return (
+    <>
+      <RoleRow right={role.period}>{role.title}</RoleRow>
+      <Bullets items={role.bullets} />
+      <TechLine items={role.tech} />
+    </>
+  );
+}
+
+function ExperienceEntry({ exp }) {
   const ref = useRef(null);
   const inView = useInView(ref, { margin: '-80px' });
   const [hovered, setHovered] = useState(false);
@@ -245,53 +257,40 @@ function ExperienceCard({ exp, index }) {
     setTimeout(() => setShowBurst(false), 900);
   };
 
+  const [primary, ...rest] = exp.roles;
+
   return (
-    <motion.div
+    <Entry
       ref={ref}
-      className={styles.card}
       onHoverStart={canHover ? () => setHovered(true) : undefined}
       onHoverEnd={canHover ? () => setHovered(false) : undefined}
     >
-      <div className={styles.cardHeader}>
-        <div className={styles.companyRow}>
-          {exp.animation === 'atlassian' && <AtlassianLogo isActive={isActive} />}
-          {exp.animation === 'meta' && (
-            <MetaLike isActive={isActive} onClick={handleMetaClick} showBurst={showBurst} />
-          )}
-          <h3 className={styles.company}>{exp.company}</h3>
-        </div>
-        <span className={styles.period}>{exp.period}</span>
-      </div>
+      <TitleRow right={exp.location}>
+        {exp.animation === 'atlassian' && <AtlassianLogo isActive={isActive} />}
+        {exp.animation === 'meta' && (
+          <MetaLike isActive={isActive} onClick={handleMetaClick} showBurst={showBurst} />
+        )}
+        {exp.company}
+      </TitleRow>
 
-      <p className={styles.role}>{exp.role}</p>
-      <p className={styles.location}>{exp.location}</p>
+      <RoleBlock role={primary} />
 
-      <ul className={styles.bullets}>
-        {exp.bullets.map((bullet, i) => (
-          <li key={i} className={styles.bullet}>{bullet}</li>
-        ))}
-      </ul>
-
-      {exp.tech && (
-        <div className={styles.techRow}>
-          {exp.tech.map((t, i) => <SkillPill key={t} name={t} index={i} />)}
-        </div>
-      )}
-
-    </motion.div>
+      {rest.map((role) => (
+        <Nested key={role.period}>
+          <RoleBlock role={role} />
+        </Nested>
+      ))}
+    </Entry>
   );
 }
 
 function Experience() {
   return (
-    <section id="experience">
-      <SectionHeading>experience</SectionHeading>
-      <div className={styles.list}>
-        {experiences.map((exp, i) => (
-          <ExperienceCard key={`${exp.company}-${exp.period}`} exp={exp} index={i} />
-        ))}
-      </div>
-    </section>
+    <Section title="Experience">
+      {experiences.map((exp) => (
+        <ExperienceEntry key={exp.company} exp={exp} />
+      ))}
+    </Section>
   );
 }
 

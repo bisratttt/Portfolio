@@ -1,26 +1,24 @@
 import { Routes, Route } from 'react-router-dom';
-import Nav from './components/Nav';
-import Hero from './components/Hero';
-import About from './components/About';
+import ThemeToggle from './components/ThemeToggle';
+import ResumeHeader from './components/ResumeHeader';
 import Experience from './components/Experience';
+import SideQuests from './components/SideQuests';
 import Education from './components/Education';
 import Hobbies from './components/Hobbies';
-import SideQuests from './components/SideQuests';
-import Contact from './components/Contact';
+import Footer from './components/Footer';
 import NotFound from './components/NotFound';
 
-function Home() {
+function Resume() {
   return (
     <>
-      <Nav />
-      <Hero />
+      <ThemeToggle />
       <main>
-        <About />
+        <ResumeHeader />
         <Experience />
         <SideQuests />
         <Education />
         <Hobbies />
-        <Contact />
+        <Footer />
       </main>
     </>
   );
@@ -29,7 +27,7 @@ function Home() {
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Resume />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

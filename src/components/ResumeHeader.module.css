@@ -1,0 +1,143 @@
+.header {
+  text-align: center;
+  padding-bottom: 1.1rem;
+  border-bottom: 2px solid var(--rule);
+  transition: border-color 0.3s;
+}
+
+.name {
+  font-size: clamp(1.7rem, 5.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.nameText {
+  transition: filter 0.2s;
+}
+
+.name:hover .nameText {
+  filter: drop-shadow(0 0 18px rgba(128, 128, 128, 0.28));
+}
+
+.cursor {
+  font-weight: 300;
+  margin-left: 1px;
+  color: var(--dark-gray);
+}
+
+/* Fixed-height slot: the tagline and the easter-egg greeting swap in place,
+   so clicking the name never shifts the page. */
+.taglineSlot {
+  position: relative;
+  height: 1.3rem;
+  margin-top: 0.45rem;
+}
+
+.tagline,
+.greeting {
+  position: absolute;
+  inset: 0;
+  font-size: 0.78rem;
+  color: var(--dark-gray);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.greeting {
+  font-style: italic;
+  color: var(--gray);
+}
+
+.contact {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  color: var(--gray);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem 0.5rem;
+  line-height: 1.9;
+}
+
+.sep {
+  color: var(--dark-gray);
+  user-select: none;
+}
+
+.link {
+  color: var(--gray);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.link:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+.linkIcon {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.link:hover .linkIcon {
+  opacity: 1;
+}
+
+/* Lead paragraph — the resume's summary line, unlabeled. */
+.summary {
+  font-size: 0.82rem;
+  color: var(--gray);
+  line-height: 1.8;
+  margin-top: 1.4rem;
+  text-align: left;
+}
+
+@media (max-width: 520px) {
+  /* Keep the tagline on one line so the slot never needs extra reserved height. */
+  .tagline,
+  .greeting {
+    font-size: 0.68rem;
+  }
+
+  /* Separators would otherwise land at the start of a wrapped line. */
+  .sep {
+    display: none;
+  }
+
+  .contact {
+    gap: 0.1rem 0.9rem;
+  }
+}
+
+@media print {
+  .header {
+    padding-bottom: 0.6rem;
+  }
+
+  .name {
+    font-size: 1.6rem;
+  }
+
+  .summary {
+    margin-top: 0.7rem;
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .link {
+    border-bottom: none;
+  }
+}
