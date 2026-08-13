@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useId } from 'react';
 import { motion, useInView, useSpring, useMotionValue, useTransform, animate as fmAnimate } from 'framer-motion';
 import Section from './Section';
-import { Entry, TitleRow, RoleRow, Nested, Bullets, B } from './Entry';
+import { Entry, TitleRow, RoleRow, NextRole, Bullets, B } from './Entry';
 import { TechLine } from './TechLine';
 import styles from './Experience.module.css';
 
@@ -13,7 +13,7 @@ const experiences = [
     roles: [
       {
         title: 'Software Engineer II',
-        period: 'Aug 2024 — Present',
+        period: '2024 — Present',
         tech: ['TypeScript', 'Python', 'Kubernetes', 'GCP', 'Terraform', 'Docker', 'Knative'],
         bullets: [
           <>Designed an <B>abstraction layer</B> for Atlassian Guard Premium features, ensuring feature isolation and scaled to <B>1M+ customers</B>.</>,
@@ -25,7 +25,7 @@ const experiences = [
       },
       {
         title: 'Software Engineer',
-        period: 'Jul 2023 — Aug 2024',
+        period: '2023 — 2024',
         tech: ['TypeScript', 'Java', 'GraphQL', 'Splunk', 'Bitbucket Pipelines'],
         bullets: [
           <>Designed and implemented admin-facing <B>data classification tools</B> for Confluence, empowering organization admins to manage data governance for <B>2M+ users</B>.</>,
@@ -44,7 +44,7 @@ const experiences = [
     roles: [
       {
         title: 'Software Engineer Intern',
-        period: 'May 2022 — Aug 2022',
+        period: '2022',
         tech: ['PHP', 'React.js', 'GraphQL', 'Node.js'],
         bullets: [
           <>Engineered <B>full-stack correspondence platform</B> enabling communication between external users and employees, scaling to process <B>100,000+ requests</B> at launch.</>,
@@ -56,37 +56,56 @@ const experiences = [
   },
 ];
 
-function ThumbsUpBurst({ isActive }) {
+/**
+ * Wraps a logo with an effects layer behind it. `.aura` is a zero-size anchor
+ * pinned to the logo's center, so aura pieces can overflow the 20px logo box
+ * without disturbing the text baseline they sit on.
+ */
+function LogoBadge({ children, aura }) {
+  return (
+    <span className={styles.badge}>
+      <span className={styles.aura}>{aura}</span>
+      {children}
+    </span>
+  );
+}
+
+/** Atlassian: sonar rings pinging outward, like a rollout going live. */
+function RingAura({ isActive }) {
   if (!isActive) return null;
 
-  return (
-    <div className={styles.burstContainer}>
-      {Array.from({ length: 8 }).map((_, i) => (
-        <motion.span
-          key={i}
-          className={styles.thumbsUp}
-          initial={{ opacity: 1, scale: 0.5, x: 0, y: 0 }}
-          animate={{
-            opacity: [1, 1, 0],
-            scale: [0.5, 1.2, 0.8],
-            x: Math.cos((i * Math.PI * 2) / 8) * 60,
-            y: Math.sin((i * Math.PI * 2) / 8) * 60 - 20,
-          }}
-          transition={{ duration: 0.8, delay: i * 0.05, ease: 'easeOut' }}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M7 22H4C3.46957 22 2.96086 21.7893 2.58579 21.4142C2.21071 21.0391 2 20.5304 2 20V13C2 12.4696 2.21071 11.9609 2.58579 11.5858C2.96086 11.2107 3.46957 11 4 11H7M14 9V5C14 4.20435 13.6839 3.44129 13.1213 2.87868C12.5587 2.31607 11.7956 2 11 2L7 11V22H18.28C18.7623 22.0055 19.2304 21.8364 19.5979 21.524C19.9654 21.2116 20.2077 20.7769 20.28 20.3L21.66 11.3C21.7035 11.0134 21.6842 10.7207 21.6033 10.4423C21.5225 10.1638 21.3821 9.90629 21.1919 9.68751C21.0016 9.46873 20.7661 9.29393 20.5016 9.17522C20.2371 9.0565 19.9499 8.99672 19.66 9H14Z"
-              stroke="#1877F2"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </motion.span>
-      ))}
-    </div>
-  );
+  return [0, 1, 2].map((i) => (
+    <motion.span
+      key={i}
+      className={styles.ring}
+      initial={{ scale: 0.35, opacity: 0.55 }}
+      animate={{ scale: 2.6, opacity: 0 }}
+      transition={{ duration: 1.5, delay: i * 0.5, repeat: Infinity, ease: 'easeOut' }}
+    />
+  ));
+}
+
+const ORBS = [
+  { color: '#0082FB', x: -18, y: -11 },
+  { color: '#A033FF', x: 17, y: -13 },
+  { color: '#FF5C87', x: 14, y: 12 },
+  { color: '#0064E0', x: -15, y: 12 },
+];
+
+/** Meta: brand-gradient orbs blooming and drifting outward. */
+function OrbAura({ isActive }) {
+  if (!isActive) return null;
+
+  return ORBS.map((orb, i) => (
+    <motion.span
+      key={i}
+      className={styles.orb}
+      style={{ background: orb.color }}
+      initial={{ x: 0, y: 0, scale: 0, opacity: 0 }}
+      animate={{ x: orb.x, y: orb.y, scale: [0, 1, 0.5], opacity: [0, 0.6, 0] }}
+      transition={{ duration: 1.9, delay: i * 0.28, repeat: Infinity, ease: 'easeOut' }}
+    />
+  ));
 }
 
 function AtlassianLogo({ isActive }) {
@@ -168,53 +187,57 @@ function AtlassianLogo({ isActive }) {
   );
 }
 
-function MetaLike({ isActive, onClick, showBurst }) {
-  // Facebook-style like button: circle pill with thumbs up icon inside.
-  // On hover (desktop) or scroll into view (mobile): circle fills blue, label "Like" fades in.
-  return (
-    <div className={styles.metaReaction}>
-      <ThumbsUpBurst isActive={showBurst} />
-      <motion.button
-        className={styles.likeButton}
-        onClick={onClick}
-        animate={{ scale: 1 }}
-        aria-label="Like"
-      >
-        {/* Pill background */}
-        <motion.div
-          className={styles.likePill}
-          animate={{
-            backgroundColor: isActive ? '#1877F2' : 'transparent',
-            borderColor: isActive ? '#1877F2' : 'var(--icon-dim)',
-          }}
-          transition={{ duration: 0.25 }}
-        >
-          {/* Thumb icon */}
-          <motion.svg
-            width="13" height="13" viewBox="0 0 24 24" fill="none"
-            animate={{ y: 0 }}
-          >
-            <path
-              d="M7 22H4C3.47 22 2.96 21.79 2.59 21.41C2.21 21.04 2 20.53 2 20V13C2 12.47 2.21 11.96 2.59 11.59C2.96 11.21 3.47 11 4 11H7M14 9V5C14 4.2 13.68 3.44 13.12 2.88C12.56 2.32 11.8 2 11 2L7 11V22H18.28C18.76 22 19.23 21.84 19.6 21.52C19.97 21.21 20.21 20.78 20.28 20.3L21.66 11.3C21.7 11.01 21.68 10.72 21.6 10.44C21.52 10.16 21.38 9.91 21.19 9.69C21 9.47 20.77 9.29 20.5 9.18C20.24 9.06 19.95 9 19.66 9H14Z"
-              fill={isActive ? 'white' : 'none'}
-              stroke={isActive ? 'white' : 'var(--icon-dim)'}
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ transition: 'stroke 0.25s, fill 0.25s' }}
-            />
-          </motion.svg>
+const META_PATH = "M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z";
 
-          {/* "Like" label that appears on hover/scroll */}
-          <motion.span
-            className={styles.likeLabel}
-            animate={{ opacity: isActive ? 1 : 0, width: isActive ? 'auto' : 0, marginLeft: isActive ? '3px' : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            Like
-          </motion.span>
-        </motion.div>
-      </motion.button>
+// The mark is three subpaths (outer contour + two counters). Trace only the
+// outer one so the light runs a single clean lap instead of hopping between them.
+const META_OUTLINE = `${META_PATH.split('z')[0]}z`;
+
+function MetaLogo({ isActive }) {
+  const uid = useId();
+  const gradId = `meta-g-${uid}`;
+
+  return (
+    <div className={styles.metaLogo}>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <defs>
+          <linearGradient id={gradId} x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stopColor="#0064E0" />
+            <stop offset="40%" stopColor="#0082FB" />
+            <stop offset="75%" stopColor="#A033FF" />
+            <stop offset="100%" stopColor="#FF5C87" />
+          </linearGradient>
+        </defs>
+
+        {/* Gray base — always visible */}
+        <path d={META_PATH} fill="var(--icon-dim)" />
+
+        {/* Brand gradient washes in on hover */}
+        <motion.path
+          d={META_PATH}
+          fill={`url(#${gradId})`}
+          initial={false}
+          animate={{ opacity: isActive ? 1 : 0 }}
+          transition={{ duration: 0.35 }}
+        />
+
+        {/* A light runs the loop — it is an infinity mark, so it never finishes */}
+        {isActive && (
+          <motion.path
+            d={META_OUTLINE}
+            fill="none"
+            stroke="#fff"
+            strokeWidth="0.9"
+            strokeLinecap="round"
+            initial={{ pathLength: 0.14, pathOffset: 0, opacity: 0 }}
+            animate={{ pathOffset: [0, 1], opacity: [0, 0.95, 0.95, 0] }}
+            transition={{
+              pathOffset: { duration: 2, repeat: Infinity, ease: 'linear' },
+              opacity: { duration: 2, repeat: Infinity, times: [0, 0.12, 0.88, 1] },
+            }}
+          />
+        )}
+      </svg>
     </div>
   );
 }
@@ -236,7 +259,6 @@ function ExperienceEntry({ exp }) {
   const inView = useInView(ref, { margin: '-80px' });
   const [hovered, setHovered] = useState(false);
   const [mobileActive, setMobileActive] = useState(false);
-  const [showBurst, setShowBurst] = useState(false);
 
   useEffect(() => {
     if (canHover) return;
@@ -251,12 +273,6 @@ function ExperienceEntry({ exp }) {
 
   const isActive = canHover ? hovered : mobileActive;
 
-  const handleMetaClick = (e) => {
-    e.stopPropagation();
-    setShowBurst(true);
-    setTimeout(() => setShowBurst(false), 900);
-  };
-
   const [primary, ...rest] = exp.roles;
 
   return (
@@ -266,9 +282,15 @@ function ExperienceEntry({ exp }) {
       onHoverEnd={canHover ? () => setHovered(false) : undefined}
     >
       <TitleRow right={exp.location}>
-        {exp.animation === 'atlassian' && <AtlassianLogo isActive={isActive} />}
+        {exp.animation === 'atlassian' && (
+          <LogoBadge aura={<RingAura isActive={isActive} />}>
+            <AtlassianLogo isActive={isActive} />
+          </LogoBadge>
+        )}
         {exp.animation === 'meta' && (
-          <MetaLike isActive={isActive} onClick={handleMetaClick} showBurst={showBurst} />
+          <LogoBadge aura={<OrbAura isActive={isActive} />}>
+            <MetaLogo isActive={isActive} />
+          </LogoBadge>
         )}
         {exp.company}
       </TitleRow>
@@ -276,9 +298,9 @@ function ExperienceEntry({ exp }) {
       <RoleBlock role={primary} />
 
       {rest.map((role) => (
-        <Nested key={role.period}>
+        <NextRole key={role.period}>
           <RoleBlock role={role} />
-        </Nested>
+        </NextRole>
       ))}
     </Entry>
   );

@@ -54,11 +54,10 @@
   flex-shrink: 0;
 }
 
-/* A second role under the same employer sits slightly inset. */
-.nested {
-  margin-top: 1rem;
-  padding-left: 0.9rem;
-  border-left: 1px solid var(--hairline);
+/* A second role at the same employer — separated by space alone, no rule or
+   indent. The shared company heading above already establishes the grouping. */
+.nextRole {
+  margin-top: 1.1rem;
 }
 
 .bullets {

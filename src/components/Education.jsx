@@ -70,7 +70,7 @@ function Education() {
           Virginia Tech
         </TitleRow>
 
-        <RoleRow right="May 2023">
+        <RoleRow right="2023">
           B.S. Computer Science
           <span className={styles.normal}>
             {' · '}Minor in Mathematics &amp; Philosophy{' · '}Magna Cum Laude

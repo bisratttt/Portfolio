@@ -36,9 +36,9 @@ export function RoleRow({ children, right }) {
   );
 }
 
-/** A second role at the same employer — inset under the company name. */
-export function Nested({ children }) {
-  return <div className={styles.nested}>{children}</div>;
+/** A second role at the same employer, under the shared company heading. */
+export function NextRole({ children }) {
+  return <div className={styles.nextRole}>{children}</div>;
 }
 
 export function Bullets({ items }) {
