@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useId } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Section from './Section';
 import { Entry, TitleRow, RoleRow } from './Entry';
@@ -16,7 +16,19 @@ const COURSES = [
   'Cryptography',
 ];
 
+/**
+ * The lettermark renders at 26x13px from a 78x40 viewBox, so anything
+ * fine-grained (a traced outline, particles) lands sub-pixel and reads as
+ * mush. A large-area colour change is the only thing legible at this size,
+ * so the school colours sweep across the mark on hover — the same idea as
+ * Atlassian's flood, rotated 90 degrees, and contained entirely within the
+ * logo box so nothing spills over the "Virginia Tech" text beside it.
+ */
 function VTLogo({ isActive }) {
+  const uid = useId();
+  const gradId = `vt-grad-${uid}`;
+  const maskId = `vt-mask-${uid}`;
+
   return (
     <div className={styles.turkey}>
       <svg
@@ -27,11 +39,35 @@ function VTLogo({ isActive }) {
         xmlns="http://www.w3.org/2000/svg"
         overflow="visible"
       >
-        <path
-          d={VT_PATH}
-          fill={isActive ? '#861F41' : 'var(--icon-bright)'}
-          style={{ transition: 'fill 0.5s ease' }}
-        />
+        <defs>
+          {/* Chicago Maroon -> Burnt Orange, VT's two official colours */}
+          <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#861F41" />
+            <stop offset="100%" stopColor="#E5751F" />
+          </linearGradient>
+
+          {/* Wipe: a rect that grows left-to-right, revealing the colour layer */}
+          <mask id={maskId}>
+            <motion.rect
+              x="10"
+              y="10"
+              height="44"
+              fill="#fff"
+              initial={false}
+              animate={{ width: isActive ? 82 : 0 }}
+              transition={{ duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
+            />
+          </mask>
+        </defs>
+
+        {/* Base. The mark is a thin lettermark, so it stays full-contrast at
+            rest rather than dimming like the chunkier company logos. */}
+        <path d={VT_PATH} fill="var(--icon-bright)" />
+
+        {/* Colour layer, revealed by the wipe */}
+        <g mask={`url(#${maskId})`}>
+          <path d={VT_PATH} fill={`url(#${gradId})`} />
+        </g>
       </svg>
     </div>
   );

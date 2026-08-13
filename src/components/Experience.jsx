@@ -70,21 +70,6 @@ function LogoBadge({ children, aura }) {
   );
 }
 
-/** Atlassian: sonar rings pinging outward, like a rollout going live. */
-function RingAura({ isActive }) {
-  if (!isActive) return null;
-
-  return [0, 1, 2].map((i) => (
-    <motion.span
-      key={i}
-      className={styles.ring}
-      initial={{ scale: 0.35, opacity: 0.55 }}
-      animate={{ scale: 2.6, opacity: 0 }}
-      transition={{ duration: 1.5, delay: i * 0.5, repeat: Infinity, ease: 'easeOut' }}
-    />
-  ));
-}
-
 const ORBS = [
   { color: '#0082FB', x: -18, y: -11 },
   { color: '#A033FF', x: 17, y: -13 },
@@ -282,11 +267,7 @@ function ExperienceEntry({ exp }) {
       onHoverEnd={canHover ? () => setHovered(false) : undefined}
     >
       <TitleRow right={exp.location}>
-        {exp.animation === 'atlassian' && (
-          <LogoBadge aura={<RingAura isActive={isActive} />}>
-            <AtlassianLogo isActive={isActive} />
-          </LogoBadge>
-        )}
+        {exp.animation === 'atlassian' && <AtlassianLogo isActive={isActive} />}
         {exp.animation === 'meta' && (
           <LogoBadge aura={<OrbAura isActive={isActive} />}>
             <MetaLogo isActive={isActive} />
